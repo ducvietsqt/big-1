@@ -47,19 +47,26 @@ export default {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
-    '@nuxtjs/pwa'
+    '@nuxtjs/pwa',
+    'cookie-universal-nuxt'
+
   ],
   /*
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
    */
-  axios: {},
+  axios: {
+    baseURL: 'https://satlegal.ebitc.com'
+  },
   /*
    ** vuetify module configuration
    ** https://github.com/nuxt-community/vuetify-module
    */
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
+    icons: {
+      iconfont: 'md',
+    },
     theme: {
       // dark: true,
       dark: false,
@@ -85,5 +92,10 @@ export default {
      ** You can extend webpack config here
      */
     extend (config, ctx) {}
+  },
+  /*
+  ***/
+  env: {
+    baseUrl: process.env.VUE_APP_DOMAIN || 'localhost'
   }
 }

@@ -1,13 +1,13 @@
 <template>
     <v-app :dark="$vuetify.theme.dark">
         <v-content class="overflow-hidden">
-            <v-container fluid fill-height pa-0>
+            <v-container fill-height>
                 <v-row>
                     <v-col cols="6">
                         <nuxt/>
                     </v-col>
                     <v-col cols="6">
-                        <img src="~/assets/img/undraw_status_update_jjgk.svg" alt="">
+                        <img class="img_auth" src="~/assets/img/undraw_status_update_jjgk.svg" alt="">
                     </v-col>
                 </v-row>
             </v-container>
@@ -25,6 +25,14 @@
   }
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+    .img_auth {
+        display: block;
+        max-width: 100%;
+    }
+</style>
+<style>
+    .link_bt {
+        text-decoration: none;
+    }
 </style>

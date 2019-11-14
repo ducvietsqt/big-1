@@ -1,9 +1,5 @@
 <template>
  <div>
-     Khoa cave
-     <div>
-         Child
-     </div>
      <nuxt-child/>
  </div>
 </template>

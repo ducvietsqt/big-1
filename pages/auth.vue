@@ -1,12 +1,12 @@
 <template>
- <div>
-     <nuxt-child/>
- </div>
+    <div>
+        <nuxt-child/>
+    </div>
 </template>
 <script>
-    export default {
-      layout: 'auth'
-    }
+  export default {
+    layout: "auth"
+  }
 </script>
 <style scoped>
 

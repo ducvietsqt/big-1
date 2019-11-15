@@ -33,7 +33,7 @@
 
 <script>
   import slugify from "slugify";
-  import {getSubdomainURL, setSubdomains} from "../../utils/index";
+  import {getSubdomainURL} from "../../utils/index";
   import SetSubdomainToken from "./SetSubdomainToken";
 
   export default {
@@ -84,7 +84,7 @@
       iframeLoaded() {
         this.submitting = false;
         let subdomainURL = getSubdomainURL(this.subdomain);
-        location.href = `${subdomainURL}/?token=${this.token}`;
+        location.href = `${subdomainURL}/auth/finish/?token=${this.token}`;
       },
       submit() {
         let {email, code, subdomain} = this;
@@ -101,7 +101,7 @@
             .then(response => {
               this.subdomain = response.data.workspace;
               this.token = response.data.token;
-              setSubdomains(response.data.workspace);
+              // setSubdomains(response.data.workspace);
             })
             .catch((error) => {
               this.submitting = false;

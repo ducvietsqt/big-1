@@ -1,28 +1,36 @@
 import {SESSION} from "../utils";
-console.log('SESSION',this);
 // initial state
-export const state = {
-  status: "",
-  token: window.$nuxt.$cookies.set(SESSION.TOKEN) || "",
-  user: {}
-};
+import Cookies from 'js-cookie';
 
-// getters
+export const state = () => {
+  return {
+    status: "",
+    token: null,
+    user: null
+  }
+}
 const getters = {
   isLoggedIn: state => !!state.token,
   authStatus: state => state.status,
   user: state => state.user
 };
-
 // actions
 export const actions = {
+  // nuxtServerInit is called by Nuxt.js before server-rendering every page
+  nuxtServerInit ({ commit }, { req }) {
+    let token = Cookies.get(SESSION.TOKEN)
+    if(token) {
+      let a = this.$axios.get("/api/users/me")
+      commit('authToken', {token})
+    }
+
+  },
   getUser({ commit }) {
     return new Promise((resolve, reject) => {
       this.$axios
         .get("/api/users/me")
         .then(resp => {
           commit("updateUser", resp.data);
-          commit("user/getCurrentUserSuccess", resp.data, { root: true });
           resolve(resp.data);
         })
         .catch(err => {
@@ -40,7 +48,7 @@ export const actions = {
           if (resp.data["2fa"] === true) {
             resolve(resp);
           } else {
-            setToken(resp, commit, resolve);
+            // setToken(resp, commit, resolve);
           }
         })
         .catch(err => {
@@ -55,19 +63,20 @@ export const actions = {
       this.$axios
         .post("/api/users/auth/login/", data)
         .then(resp => {
-          setToken(resp, commit, resolve);
+          // setToken(resp, commit, resolve);
         })
         .catch(err => {
           commit("authError");
-          window.$nuxt.$cookies.remove(SESSION.TOKEN);
+          Cookies.remove(SESSION.TOKEN);
           reject(err);
         });
     });
   },
   logout({ commit }) {
+
     return new Promise(resolve => {
       commit("logout");
-      window.$nuxt.$cookies.remove(SESSION.TOKEN);
+      Cookies.remove(SESSION.TOKEN);
       resolve();
     });
   }
@@ -85,7 +94,11 @@ export const mutations = {
     state.status = "success";
     state.token = token;
     state.user = user;
-    window.$nuxt.$cookies.set(SESSION.TOKEN, token);
+    Cookies.set(SESSION.TOKEN, token);
+  },
+  authToken(state, {token}) {
+    state.token = token;
+    Cookies.set(SESSION.TOKEN, token);
   },
   authError(state) {
     state.status = "error";

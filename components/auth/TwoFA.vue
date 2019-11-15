@@ -77,7 +77,6 @@
           .catch(err => {
             if (err.response.data.detail) {
               this.formError = err.response.data.detail;
-              this.$eventHub.$emit(this.$eventTypes.snackNotify, this.formError);
               this.code = "";
             }
           }).finally(() => {

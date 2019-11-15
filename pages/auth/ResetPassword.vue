@@ -55,8 +55,7 @@
     methods: {
       submit() {
         let email = this.email;
-        this.$axios
-          .post("/api/users/auth/password/reset/", {email})
+        this.$axios.post("/api/users/auth/password/reset/", {email})
           .then(() => (this.submitted = true))
           .catch(() => {
 

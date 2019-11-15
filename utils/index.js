@@ -1,6 +1,5 @@
 import _ from 'lodash';
 import moment from 'moment';
-
 export const getSubdomain = hostname => {
   // TODO: from htactive, hardcode for testing on preview deploy link
   // if (location.hostname.endsWith(".netlify.com")) return "sat-prj";

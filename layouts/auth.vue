@@ -2,6 +2,9 @@
     <v-app :dark="$vuetify.theme.dark">
         <v-content class="overflow-hidden">
             <v-container fill-height>
+                <div>
+<!--                    {{$store}}-->
+                </div>
                 <v-row>
                     <v-col cols="6">
                         <nuxt/>

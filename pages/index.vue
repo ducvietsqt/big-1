@@ -44,13 +44,11 @@
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue' // eslint-disable-line
-import VuetifyLogo from '~/components/VuetifyLogo.vue' // eslint-disable-line
-
 export default {
+  middleware: 'authenticated',
   components: {
-    // Logo,
-    // VuetifyLogo
-  }
+  
+  },
+  
 }
 </script>

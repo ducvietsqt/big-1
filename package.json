@@ -16,9 +16,11 @@
     "hooks": {}
   },
   "dependencies": {
+    "@nuxtjs/auth": "^4.8.4",
     "@nuxtjs/axios": "^5.3.6",
     "@nuxtjs/pwa": "^3.0.0-0",
     "cookie-universal-nuxt": "^2.0.18",
+    "js-cookie": "^2.2.1",
     "localStorage": "^1.0.4",
     "moment": "^2.24.0",
     "nuxt": "^2.0.0",

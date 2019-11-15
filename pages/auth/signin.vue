@@ -1,5 +1,8 @@
 <template>
-    <v-form ref="form" @submit.prevent="submit" lazy-validation class="form_auth">
+    <div v-if="submitting">
+        Loading
+    </div>
+    <v-form v-else-if="isValidSubDomain" ref="form" @submit.prevent="submit" lazy-validation class="form_auth">
         <h4 class="auth-header mb-4 font-weight-bold text-primary headline text-xs-left">Sign in to your workspace</h4>
         <v-layout align-center>
             <v-text-field name="login"
@@ -11,7 +14,7 @@
                           v-model.trim="subdomain">
                 <template v-slot:append-outer>
                     <div class="text-append">
-                    <span>.{{domain}}</span>
+                        <span>.{{domain}}</span>
                     </div>
                 </template>
             </v-text-field>
@@ -23,7 +26,7 @@
                    :disabled="submitting || !subdomain"
                    :class="{ red: !valid, green: valid }">
                 Continue
-<!--                <v-icon right dark>arrow_forward</v-icon>-->
+                <!--                <v-icon right dark>arrow_forward</v-icon>-->
             </v-btn>
             <div class="subheading mt-3">
                 Or,
@@ -31,63 +34,80 @@
             </div>
         </div>
     </v-form>
+    <div v-else>
+        <h4 class="auth-header mb-4 font-weight-bold text-primary headline text-xs-left">
+            WorkSpace does not exist
+        </h4>
+    </div>
 </template>
 
 <script>
-   import { getSubdomainURL, getSubdomain, isValidSubdomain } from "../../utils"
-   
-export default {
-  data() {
-    return {
-      subdomain: '',
-      domain: process.env.baseUrl,
-      showLoginForm: false,
-      submitting: false,
-      valid: false,
-      workspace: {}
-    }
-  },
-  asyncData ({error}) {
-    console.log('error_context', error)
-    return { project: 'nuxt' }
-  },
-  computed: {
-    _subdomain() {
-      try {
-        return getSubdomain(location.hostname)
-      }catch (e) {
-        return ''
+  import { getMainURL, getSubdomain, isValidSubdomain } from "../../utils"
+
+  export default {
+    data() {
+      return {
+        location: {},
+        subdomain: null,
+        domain: null,
+        isValidSubDomain: false,
+        submitting: false,
+        valid: false,
+        workspace: null
       }
     },
-    isSubdomain() {
-      isValidSubdomain(this.subdomain)
-    }
-  },
-  created() {
-    if (this.subdomain) {
-      this.getWorkspace(this.subdomain);
-    }
-  },
-  mounted() {
-    console.log('location',location);
-  },
-  methods: {
-    async getWorkspace(subdomain) {
-      this.submitting = true;
-      try {
-        let rs = await this.$axios.get(`/api/workspaces/${subdomain}/check/`);
-        console.log('$axios',rs)
-      }catch (e) {
-        console.log('$axios',e.response)
-      }
-      this.submitting = false;
+    asyncData({ error }) {
+      console.log("error_context", this)
+      return { project: "nuxt" }
     },
-    submit() {
-      if (!this.subdomain) return;
-      this.getWorkspace(this.subdomain);
+
+    created() {
+      if (this.subdomain) {
+        this.getWorkspace(this.subdomain)
+      }
+    },
+    mounted() {
+      this.location = location
+    },
+    methods: {
+      async getWorkspace(subdomain) {
+        this.submitting = true
+        try {
+          let rs = await this.$axios.get(`/api/workspaces/${subdomain}/check/`)
+          console.log("$axios", rs)
+        } catch (e) {
+          console.log("$axios", e.response)
+        }
+        this.submitting = false
+      },
+      submit() {
+        if (!this.subdomain) return
+        this.getWorkspace(this.subdomain)
+      }
+    },
+    watch: {
+      async location(n, p) {
+        if (!n) return
+        let subdomain = getSubdomain(n.hostname)
+        this.subdomain = subdomain
+        let isValidSubDomain = isValidSubdomain(subdomain)
+        
+        if (isValidSubDomain) {
+          this.submitting = true
+          try {
+            let dd = await this.$axios.get(`/api/workspaces/${subdomain}/check/`)
+            this.isValidSubDomain = true
+            this.$router.push('/auth/login')
+          } catch (e) {
+            console.log(getMainURL())
+            location.href = getMainURL()
+          }
+          this.submitting = false
+          
+        }
+      }
     }
   }
-}
 </script>
 
 <style scoped>

@@ -29,9 +29,9 @@
     created() {
       // let { token } = this.$route.query;
       // alert(this.$route.query.token);
-      if (this.$route.query.token) {
+      /*if (this.$route.query.token) {
         setSESSION(SESSION.TOKEN, this.$route.query.token);
-      }
+      }*/
     },
     computed: {
       iframeSrc() {

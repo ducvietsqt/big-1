@@ -1,10 +1,11 @@
 import _ from 'lodash';
+import moment from 'moment';
 export const getSubdomain = hostname => {
   // TODO: from htactive, hardcode for testing on preview deploy link
   // if (location.hostname.endsWith(".netlify.com")) return "sat-prj";
   // Will remove on production server
   // end hard code
-  let appDomain = process.env.baseUrl;
+  let appDomain = process.env.VUE_APP_DOMAIN || "localhost";
   return hostname.replace(appDomain, "").split(".")[0];
 };
 
@@ -19,7 +20,9 @@ export const getMainURL = () => {
 export const getSubdomainURL = subdomain => {
   return `${location.protocol}//${subdomain}.${location.host}`;
 };
-
+/*window.setSESSION = setSESSION;
+window.SESSION = SESSION;
+window.getSESSION = getSESSION;*/
 export const SESSION = {
   TOKEN: 'token',
   SUBDOMAINS: 'subdomains',

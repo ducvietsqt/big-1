@@ -1,112 +1,82 @@
 <template>
-    <div>
-      <div v-if="submitting">
-        <!--Loading-->
-      </div>
-      <login v-else-if="isValidSubDomain"/>
-      <v-form v-else ref="form" @submit.prevent="submit" lazy-validation class="form_auth">
+    <div v-if="submitting">
+        Loading
+    </div>
+    <v-form v-else-if="isValidSubDomain" ref="form" @submit.prevent="submit" lazy-validation class="form_auth">
         <h4 class="auth-header mb-4 font-weight-bold text-primary headline text-xs-left">Sign in to your workspace</h4>
         <v-layout align-center>
-          <v-text-field name="login"
-                        class="child-flex"
-                        label="Enter your workspace URL"
-                        type="text"
-                        autofocus
-                        outlined
-                        v-model.trim="subdomain">
-            <template v-slot:append-outer>
-              <div class="text-append">
-                <span>.{{domain}}</span>
-              </div>
-            </template>
-          </v-text-field>
+            <v-text-field name="login"
+                          class="child-flex"
+                          label="Enter your workspace URL"
+                          type="text"
+                          autofocus
+                          outlined
+                          v-model.trim="subdomain">
+                <template v-slot:append-outer>
+                    <div class="text-append">
+                        <span>.{{domain}}</span>
+                    </div>
+                </template>
+            </v-text-field>
         </v-layout>
         <div class="px-0">
-          <v-btn color="primary" class="ml-0"
-                 @click="submit"
-                 :loading="submitting"
-                 :disabled="submitting || !subdomain"
-                 :class="{ red: !valid, green: valid }">
-            Continue
-            <!--                <v-icon right dark>arrow_forward</v-icon>-->
-          </v-btn>
-          <div class="subheading mt-3">
-            Or,
-            <nuxt-link class="link_bt" to="/auth/create-work-space">Create a new workspace?</nuxt-link>
-          </div>
+            <v-btn color="primary" class="ml-0"
+                   @click="submit"
+                   :loading="submitting"
+                   :disabled="submitting || !subdomain"
+                   :class="{ red: !valid, green: valid }">
+                Continue
+                <!--                <v-icon right dark>arrow_forward</v-icon>-->
+            </v-btn>
+            <div class="subheading mt-3">
+                Or,
+                <router-link class="link_bt" to="/auth/create-work-space">Create a new workspace?</router-link>
+            </div>
         </div>
-      </v-form>
-
-      <div v-if="notExistSubdomain">
+    </v-form>
+    <div v-else>
         <h4 class="auth-header mb-4 font-weight-bold text-primary headline text-xs-left">
-          WorkSpace does not exist
+            WorkSpace does not exist
         </h4>
-      </div>
     </div>
 </template>
 
 <script>
-  import { getMainURL, getSubdomain, getSubdomainURL, isValidSubdomain } from "../../utils"
-  import login from '../../components/auth/login'
-  export default {
-    components: {
-      login
-    },
-    async asyncData (context) {
-      const { req, res, $axios } = context;
-      // using req and res
-      if (process.server) {
-        let _domain = req.headers.host.split(":")[0];
-        let subdomain = getSubdomain(_domain);
-        let isValid = isValidSubdomain(subdomain);
-        try {
-          let dd = await $axios.get(`/api/workspaces/${subdomain}/check/`)
-          // return { host: req.headers.host, isValidSubDomain: isValid, subdomain }
-          return {}
-        }catch (e) {
-          // console.log('ERROR',e.response.status)
-          return { host: req.headers.host, isValidSubDomain: false }
-        }
+  import { getMainURL, getSubdomain, isValidSubdomain } from "../../utils"
 
-      }
-      return {}
-    },
+  export default {
     data() {
       return {
+        location: {},
         subdomain: null,
-        domain: process.env.baseUrl,
+        domain: null,
         isValidSubDomain: false,
         submitting: false,
         valid: false,
-        workspace: null,
-        notExistSubdomain: false
+        workspace: null
       }
     },
-
+    asyncData({ error }) {
+      console.log("error_context", this)
+      return { project: "nuxt" }
+    },
 
     created() {
-
-    },
-    async mounted() {
-      let subdomain = getSubdomain(location.hostname);
-      if(subdomain) {
-        this.subdomain = subdomain;
-        await this.getWorkspace(subdomain)
+      if (this.subdomain) {
+        this.getWorkspace(this.subdomain)
       }
-
+    },
+    mounted() {
+      this.location = location
     },
     methods: {
       async getWorkspace(subdomain) {
-        let hostsubdomain = getSubdomain(location.hostname);
         this.submitting = true
         try {
           let rs = await this.$axios.get(`/api/workspaces/${subdomain}/check/`)
-          if(!hostsubdomain) {
-            location.href = getSubdomainURL(subdomain);
-          }
-          this.isValidSubDomain = true;
+          console.log("$axios", rs)
         } catch (e) {
-          this.notExistSubdomain = true;
+          console.log("$axios", e.response)
         }
         this.submitting = false
       },
@@ -116,7 +86,26 @@
       }
     },
     watch: {
-
+      async location(n, p) {
+        if (!n) return
+        let subdomain = getSubdomain(n.hostname)
+        this.subdomain = subdomain
+        let isValidSubDomain = isValidSubdomain(subdomain)
+        
+        if (isValidSubDomain) {
+          this.submitting = true
+          try {
+            let dd = await this.$axios.get(`/api/workspaces/${subdomain}/check/`)
+            this.isValidSubDomain = true
+            this.$router.push('/auth/login')
+          } catch (e) {
+            console.log(getMainURL())
+            location.href = getMainURL()
+          }
+          this.submitting = false
+          
+        }
+      }
     }
   }
 </script>

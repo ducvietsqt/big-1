@@ -5,8 +5,8 @@
   "author": "da",
   "private": true,
   "scripts": {
-    "dev": "nuxt",
-    "build": "nuxt build",
+    "dev": "VUE_PROCESS=dev VUE_APP_DOMAIN=aloga nuxt",
+    "build": "VUE_PROCESS=prod nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore ."

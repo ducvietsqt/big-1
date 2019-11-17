@@ -1,4 +1,9 @@
 import colors from "vuetify/es5/util/colors"
+const VUE_APP_DOMAIN = {
+  dev: 'localhost',
+  prod: 'satlegal'
+};
+const baseUrl = process.env.NODE_ENV === 'development' ? VUE_APP_DOMAIN.dev : VUE_APP_DOMAIN.prod;
 
 export default {
   mode: "universal",
@@ -101,6 +106,7 @@ export default {
   /*
   ***/
   env: {
-    baseUrl: process.env.VUE_APP_DOMAIN || "localhost"
-  }
+    baseUrl: baseUrl,
+  },
+
 }

@@ -24,7 +24,7 @@
                  color="primary" class="ml-0">Next
           </v-btn>
           <div class="subheading mt-3">
-            Or, <router-link class="link_bt" :to="{ name: 'signin' }">Sign In workspace?</router-link>
+            Or, <router-link class="link_bt" to="/auth/signin">Sign In workspace?</router-link>
           </div>
         </div>
 

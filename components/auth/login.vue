@@ -7,7 +7,7 @@
             <v-card-title class="layout pt-0 justify-center">
                 <div class="headline text-xs-left">{{workspace}}.{{domain}}</div>
             </v-card-title>
-            
+
             <v-text-field label="Email"
                           v-model="email"
                           required
@@ -16,7 +16,7 @@
                           :rules="emailRules"
                           type="text">
             </v-text-field>
-            
+
             <v-text-field name="password"
                           label="Password"
                           v-model="password"
@@ -48,13 +48,13 @@
 
 <script>
   import {getMainURL, getSubdomain} from "../../utils/index";
-  import TwoFA from '../../components/auth/TwoFA';
+  import TwoFA from './TwoFA';
   export default {
     components: {TwoFA},
     metaInfo: {
       title: "Sign In"
     },
-    
+
     data: () => ({
       domain: process.env.baseUrl,
       email: "",
@@ -78,7 +78,7 @@
         console.log('MOUNTED', location)
         this.workspace = getSubdomain(location.hostname)
       // }
-      
+
     },
     methods: {
       login() {
@@ -86,8 +86,7 @@
         let password = this.password;
         this.formError = "";
         this.submitting = true;
-        this.$store
-          .dispatch("auth/login", {email, password, workspace: this.workspace})
+        this.$store.dispatch("auth/login", {email, password, workspace: this.workspace})
           .then(response => {
             this.submitting = false;
             if (this.$store.getters["auth/isLoggedIn"]) {

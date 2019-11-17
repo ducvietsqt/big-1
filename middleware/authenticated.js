@@ -1,6 +1,6 @@
-export default function ({ store, redirect, nuxt }) {
+export default function (context) {
+  const { store, redirect, nuxt } = context
   // If the user is not authenticated
-  console.log('AUTHENTICATED_1',store)
   if (!store.state.auth.token) {
     return redirect('/auth/signin')
   }

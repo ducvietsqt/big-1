@@ -16,6 +16,9 @@
              :disabled="submitting || !valid">
         Get Reset Link
       </v-btn>
+      <nuxt-link class="link_bt mt-4 d-block" to="/auth/signin">
+        Sign in
+      </nuxt-link>
     </v-form>
   </div>
   <div class="form_auth" v-else>
@@ -41,7 +44,6 @@
     },
     data() {
       return {
-        domain: location.hostname,
         email: "",
         submitted: false,
         submitting: false,

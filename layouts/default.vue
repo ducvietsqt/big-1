@@ -10,9 +10,10 @@
                     </div>
                     <v-toolbar-items>
                         <div class="d-flex align-center">
-                            <v-btn class="text-capitalize" text color="primary" dark to="/auth/signin">Sign in</v-btn>
-                            <v-btn class="text-capitalize ml-2" rounded color="primary" dark to="/auth/signup">Sign Up
-                            </v-btn>
+                          <nuxt-link to="/auth/signin">Sign in</nuxt-link>
+                            <!--<v-btn class="text-capitalize" text color="primary" dark to="/auth/signin">Sign in</v-btn>-->
+                            <nuxt-link class="text-capitalize ml-2" rounded color="primary" dark to="/auth/signup">Sign Up
+                            </nuxt-link>
                         </div>
                     </v-toolbar-items>
                 </div>
@@ -31,6 +32,7 @@
 
 <script>
   export default {
+    middleware: 'authenticated',
     data() {
       return {
         clipped: false,

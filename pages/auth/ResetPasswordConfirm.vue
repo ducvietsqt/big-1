@@ -37,7 +37,7 @@
         <v-card-title class="layout pt-0 pl-0 justify-center">
           <div class="headline text-center subheading">
             Password reset links expire after 24 hours if unused, you can
-            <router-link class="link_bt" to="/reset-password">request a new one</router-link>
+            <router-link class="link_bt" to="/auth/ResetPassword">request a new one</router-link>
           </div>
         </v-card-title>
       </template>

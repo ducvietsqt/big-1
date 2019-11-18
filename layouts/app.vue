@@ -1,18 +1,27 @@
 <template>
-    <div>
-        <div>
-<!--            {{$auth}}-->
-        </div>
-        <nuxt/>
-    </div>
+  <v-app :dark="$vuetify.theme.dark">
+    <nuxt/>
+  </v-app>
 </template>
 
 <script>
-  export default {
-  
-  }
+    export default {
+        middleware: 'authenticated',
+        data() {
+            return {
+                clipped: false,
+                title: "Vuetify.js"
+            }
+        },
+        mounted() {
+            console.log('HELLO', this.$store)
+        }
+    }
 </script>
-
-<style scoped>
-
+<style lang="scss">
+  .link_head {
+    /*border: solid 1px red;*/
+    text-decoration: none;
+  }
 </style>
+

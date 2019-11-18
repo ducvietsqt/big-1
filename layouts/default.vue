@@ -6,13 +6,12 @@
           <v-toolbar-title>SatMatter</v-toolbar-title>
           <div class="flex-grow-1 px-4 d-flex align-center">
             <router-link to="/" class="link_head mr-4">Home</router-link>
-            <router-link to="/inspire" class="link_head">Inspire</router-link>
           </div>
           <v-toolbar-items>
             <div class="d-flex align-center">
-              <nuxt-link to="/auth/signin">Sign in</nuxt-link>
+              <nuxt-link class="link_bt" to="/auth/signin">Sign in</nuxt-link>
               <!--<v-btn class="text-capitalize" text color="primary" dark to="/auth/signin">Sign in</v-btn>-->
-              <nuxt-link class="text-capitalize ml-2" rounded color="primary" dark to="/auth/signup">Sign Up
+              <nuxt-link class="text-capitalize ml-2 link_bt" rounded color="primary" dark to="/auth/create-work-space">Sign Up
               </nuxt-link>
             </div>
           </v-toolbar-items>
@@ -31,9 +30,7 @@
 </template>
 
 <script>
-    import Cookies from 'js-cookie';
     export default {
-        middleware: 'authenticated',
         data() {
             return {
                 clipped: false,
@@ -41,7 +38,7 @@
             }
         },
         mounted() {
-          console.log('HELLO',this.$store)
+            // console.log('HELLO', this.$store)
         }
     }
 </script>

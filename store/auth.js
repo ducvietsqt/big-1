@@ -3,9 +3,11 @@ import {SESSION} from "../utils";
 import Cookies from 'js-cookie';
 
 export const state = () => {
+  let token = ''
   return {
     status: "",
-    token: Cookies.get(SESSION.TOKEN),
+    token: token,
+    authenticated: !!token,
     user: null
   }
 }
@@ -22,7 +24,9 @@ export const actions = {
     if (token) {
       commit('authToken', {token})
       this.$axios.setToken("JWT " + token);
-      await this.$axios.get("/api/users/me")
+      let user = await this.$axios.get("/api/users/me")
+      // console.log('USER', user.data)
+      commit('authSuccess', {user: user.data, token})
     }
   },
   getUser({commit}) {
@@ -98,6 +102,7 @@ export const mutations = {
   },
   authToken(state, {token}) {
     state.token = token;
+    state.authenticated = !!token;
     Cookies.set(SESSION.TOKEN, token);
   },
   authError(state) {

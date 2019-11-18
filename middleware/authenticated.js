@@ -1,4 +1,3 @@
-import Cookies from 'js-cookie';
 import {SESSION} from "~/utils";
 export default function (context) {
   const { store, redirect } = context

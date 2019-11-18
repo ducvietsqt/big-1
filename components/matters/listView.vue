@@ -1,14 +1,13 @@
 <template>
-  <nuxt-child/>
+ <div></div>
 </template>
+
 <script>
     export default {
-        layout: "auth",
-        mounted() {
-
-        }
+        name: "listView"
     }
 </script>
+
 <style scoped>
 
 </style>

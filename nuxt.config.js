@@ -11,7 +11,7 @@ export default {
    ** Headers of the page
    */
   head: {
-    titleTemplate: "%s - " + process.env.npm_package_name,
+    titleTemplate: "%s - " + process.env.title,
     title: process.env.npm_package_name || "",
     meta: [
       { charset: "utf-8" },
@@ -39,7 +39,7 @@ export default {
    */
   plugins: [
     '~/plugins/axios',
-    '~/plugins/clientInit',
+    '~/plugins/serverInit',
   ],
   /*
    ** Nuxt.js dev-modules
@@ -74,7 +74,7 @@ export default {
   vuetify: {
     customVariables: ["~/assets/variables.scss"],
     icons: {
-      iconfont: "md"
+      iconfont: 'mdi',
     },
     theme: {
       // dark: true,
@@ -107,6 +107,7 @@ export default {
   ***/
   env: {
     baseUrl: baseUrl,
+    title: 'SatLegal'
   },
 
 }

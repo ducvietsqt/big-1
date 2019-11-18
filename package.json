@@ -1,8 +1,8 @@
 {
-  "name": "pwa-app",
+  "name": "SatLegal",
   "version": "1.0.0",
-  "description": "My astonishing Nuxt.js project",
-  "author": "da",
+  "description": "Nuxt.js project (Vue SSR | PWA)",
+  "author": "DONGA",
   "private": true,
   "scripts": {
     "dev": "VUE_PROCESS=dev VUE_APP_DOMAIN=aloga nuxt",

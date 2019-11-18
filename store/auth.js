@@ -5,7 +5,7 @@ import Cookies from 'js-cookie';
 export const state = () => {
   return {
     status: "",
-    token: null,
+    token: Cookies.get(SESSION.TOKEN),
     user: null
   }
 }
@@ -17,15 +17,15 @@ const getters = {
 // actions
 export const actions = {
   // nuxtServerInit is called by Nuxt.js before server-rendering every page
-  nuxtServerInit ({ commit }, { req }) {
+  async nuxtServerInit({commit}, {req}) {
     let token = Cookies.get(SESSION.TOKEN)
-    if(token) {
-      let a = this.$axios.get("/api/users/me")
+    if (token) {
       commit('authToken', {token})
+      this.$axios.setToken("JWT " + token);
+      await this.$axios.get("/api/users/me")
     }
-
   },
-  getUser({ commit }) {
+  getUser({commit}) {
     return new Promise((resolve, reject) => {
       this.$axios
         .get("/api/users/me")
@@ -39,7 +39,7 @@ export const actions = {
         });
     });
   },
-  login({ commit }, user) {
+  login({commit}, user) {
     return new Promise((resolve, reject) => {
       commit("authRequest");
       this.$axios
@@ -57,7 +57,7 @@ export const actions = {
         });
     });
   },
-  login2({ commit }, data) {
+  login2({commit}, data) {
     return new Promise((resolve, reject) => {
       commit("authRequest");
       this.$axios
@@ -72,7 +72,7 @@ export const actions = {
         });
     });
   },
-  logout({ commit }) {
+  logout({commit}) {
 
     return new Promise(resolve => {
       commit("logout");
@@ -90,7 +90,7 @@ export const mutations = {
   authRequest(state) {
     state.status = "loading";
   },
-  authSuccess(state, { token, user }) {
+  authSuccess(state, {token, user}) {
     state.status = "success";
     state.token = token;
     state.user = user;

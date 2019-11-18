@@ -1,6 +1,6 @@
-# pwa-app
+# SatLegal
 
-> My astonishing Nuxt.js project
+> Nuxt.js project (Vue SSR | PWA)
 
 ## Build Setup
 

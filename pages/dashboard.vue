@@ -10,21 +10,22 @@
     <v-content>
       <!-- Provides the application the proper gutter -->
       <v-container fluid>
-        <div>
-          Welcome to project
-        </div>
-        <v-card>
+        <v-card max-width="350">
+          <v-card-title>Create matter</v-card-title>
           <v-card-text>
             <v-form lazy-validation @submit.prevent="submit">
               <v-text-field v-model="name"
                             label="Matter Name"
                             required></v-text-field>
-              <v-btn color="primary" @click.stop="submit">Submit</v-btn>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="primary" @click.stop="submit">Submit</v-btn>
+              </v-card-actions>
             </v-form>
           </v-card-text>
         </v-card>
+        <ListView/>
         <!-- If using vue-router -->
-        {{$store.state.matters.list}}
       </v-container>
     </v-content>
 
@@ -35,7 +36,11 @@
 </template>
 
 <script>
+    import {mapActions, mapGetters} from 'vuex'
+    import ListView from "../components/matters/listView";
+
     export default {
+        components: {ListView},
         layout: "app",
         head() {
             return {
@@ -47,15 +52,20 @@
             }
         },
         async asyncData(context) {
-            await context.store.dispatch('matters/load')
+
         },
         data() {
-          return {
-              name: ''
-          }
+            return {
+                name: ''
+            }
         },
-        mounted() {
-            console.log('MATTER', this.$store.state, this.$store.getters['matters/list'])
+        async mounted() {
+            await this.$store.dispatch('matters/load')
+        },
+        computed: {
+            ...mapGetters({
+                list: "matters/list"
+            })
         },
         methods: {
             async submit() {

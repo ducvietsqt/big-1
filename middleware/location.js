@@ -9,10 +9,7 @@ export default function (context) {
     let isValid = isValidSubdomain(subdomain);
     console.log('LOCATION',subdomain, isValid);
     if (!isValid) {
-      // context.redirect
-      // console.log(location)
       return context.redirect('')
-
     }
   }
   // Client-side

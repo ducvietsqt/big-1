@@ -111,7 +111,7 @@
     computed: {
       createCompanyLink() {
         try {
-          return `${getMainURL()}/create-workspace`;
+          return `${getMainURL()}/auth/create-work-space`;
         }catch (e) {
           return ''
         }

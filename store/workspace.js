@@ -1,9 +1,19 @@
 
 // initial state
+const types = {
+  pending: 'pending',
+  completed: 'completed',
+  resetList: 'resetList',
+  updateList: 'updateList',
+  resetMembers: 'resetMembers',
+  resetLabels: 'resetLabels',
+}
+
 export const state = () => {
   return {
     members: [],
-    projects: []
+    labels: [],
+    projects: [],
   }
 };
 
@@ -23,20 +33,44 @@ export const actions = {
   async nuxtServerInit({commit}, {req}) {
     // todo: load members workspace
     // todo: load matter workspace
+  },
+  async loadMembers({commit, state}) { // eslint-disable-line
+    commit(types.pending)
+    return new Promise((resolve) => {
+      let members = [];
+      this.$axios.get("/api/workspace/members/").then(rs => {
+        console.log('members', rs.data)
+        members = rs.data.results
+        commit(types.resetMembers, members)
+        resolve(members)
+      }).finally(() => {
+        resolve('done')
+      })
+    })
+  },
+  loadLabels({commit}) {
+    return new Promise((resolve) => {
+      let labels = [];
+      this.$axios.get("/api/workspace/members/").then(rs => {
+        console.log('members', rs.data)
+        labels = rs.data.results
+        commit(types.resetLabels, labels)
+        resolve(labels)
+      }).finally(() => {
+        resolve('done')
+      })
+    })
   }
 };
 
 export const mutations = {
-  setMembers(state, members) {
+  [types.resetMembers](state, members) {
     state.members = members;
-    state.gettingMembers = false;
-    state.loaded = true;
   },
-  setProjects(state, projects) {
-    state.projects = projects;
+  [types.resetLabels](state, labels) {
+    state.labels = labels;
   },
-  appendNewMember(state, member) {
-    state.members.push(member);
-  }
+
+
 };
 

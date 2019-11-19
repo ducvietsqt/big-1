@@ -15,13 +15,13 @@
     asyncData(context) {
     },
     async mounted() {
-      
+
       if (this.$route.query.token) {
         let token = this.$route.query.token
         await this.$store.commit("auth/authToken", { token })
         this.$axios.setToken("JWT " + token)
         await this.$store.dispatch("auth/getUser")
-        this.$router.push('/app')
+        this.$router.push('/dashboard')
       }
 
     },

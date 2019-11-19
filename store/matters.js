@@ -50,6 +50,7 @@ export const actions = {
     return new Promise((resolve) => {
       let mt = [];
       this.$axios.get("/api/matters/").then(rs => {
+        console.log('MATTERS', rs.data)
         mt = rs.data
         mt = mt.map(m => new Matter(m))
         commit(types.resetList, mt)
@@ -104,8 +105,8 @@ export const mutations = {
     state.pending = false
   },
 
-  [types.resetList](state, channels) {
-    state.list = channels
+  [types.resetList](state, matters) {
+    state.list = matters
   },
 
   [types.updateList](state, matter) {

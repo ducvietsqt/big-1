@@ -11,7 +11,8 @@ export default {
    ** Headers of the page
    */
   head: {
-    titleTemplate: "%s - " + process.env.title,
+    // titleTemplate: "%s - " + process.env.title,
+    titleTemplate: "%s - " + process.env.npm_package_name,
     title: process.env.npm_package_name || "",
     meta: [
       { charset: "utf-8" },
@@ -40,6 +41,8 @@ export default {
   plugins: [
     '~/plugins/axios',
     '~/plugins/serverInit',
+    '~/plugins/document',
+    '~/plugins/register-global-component',
   ],
   /*
    ** Nuxt.js dev-modules
@@ -80,8 +83,11 @@ export default {
       // dark: true,
       dark: false,
       themes: {
+        light: {
+          primary: "#6d42c7",
+        },
         dark: {
-          primary: colors.blue.darken2,
+          primary: "#6d42c7",
           accent: colors.grey.darken3,
           secondary: colors.amber.darken3,
           info: colors.teal.lighten1,

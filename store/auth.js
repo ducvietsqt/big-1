@@ -19,15 +19,23 @@ const getters = {
 // actions
 export const actions = {
   // nuxtServerInit is called by Nuxt.js before server-rendering every page
-  async nuxtServerInit({commit}, {req}) {
-    let token = Cookies.get(SESSION.TOKEN)
-    if (token) {
-      commit('authToken', {token})
-      this.$axios.setToken("JWT " + token);
-      let user = await this.$axios.get("/api/users/me")
-      // console.log('USER', user.data)
-      commit('authSuccess', {user: user.data, token})
-    }
+  async nuxtServerInit({commit, dispatch}, {req}) {
+    return new Promise((resolve) => {
+      let token = Cookies.get(SESSION.TOKEN)
+      if (token) {
+        commit('authToken', {token})
+        this.$axios.setToken("JWT " + token);
+        let user;
+        this.$axios.get("/api/users/me").then(rs => {
+          user = rs.data
+          commit('authSuccess', {user: rs.data, token})
+        }).finally(() => {
+          resolve(1)
+        })
+        // console.log('USER', user.data)
+      }
+    })
+
   },
   getUser({commit}) {
     return new Promise((resolve, reject) => {
@@ -40,6 +48,7 @@ export const actions = {
         .catch(err => {
           commit("authError");
           reject(err);
+
         });
     });
   },

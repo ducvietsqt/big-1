@@ -1,6 +1,5 @@
-
 export class Matter {
-  constructor (c) {
+  constructor(c) {
     this.canUpdate = true
     if (!c) {
       this.members = []
@@ -8,7 +7,7 @@ export class Matter {
     }
 
     this.matterID = c.id
-    this.name = c.name
+    this.name = c.name || 'N/A'
     this.clients = c.clients || []
     this.intro = c.intro
     this.jurisdiction = c.jurisdiction
@@ -32,32 +31,48 @@ export class Matter {
 
   }
 
-  fuzzyKeys () {
+  fuzzyKeys() {
     return {
       name: this.name,
     }
   }
 
-  suggestionLabel () {
+  suggestionLabel() {
     return this.name || this.matterID || ''
   }
 
-  isMember (userID) {
+  isMember(userID) {
     return this.members.indexOf(userID) !== -1
   }
 
-  removeMember (user) {
+  removeMember(user) {
     const ID = (user || {}).id || user
     this.members = this.members.filter(m => m !== ID)
   }
 
-  isPublic () {
+  isPublic() {
     return this.type === 'public'
   }
 
-  isValid () {
+  isValid() {
     return !this.deletedAt && !this.archivedAt
   }
-
+  // single select N/A, very low, low, normal, high, very high
+  riskLevel(riskLevel = true) {
+    switch (riskLevel ? this.risk_level : this.priority) {
+      case 1:
+        return 'very low';
+      case 2:
+        return 'low';
+      case 3:
+        return 'normal';
+      case 4:
+        return 'high';
+      case 5:
+        return 'very high';
+      default:
+        return 'N/A'
+    }
+  }
 
 }

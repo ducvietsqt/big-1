@@ -54,7 +54,7 @@
 </template>
 
 <script>
-  import { getRecentDomain } from "../../utils";
+  // import { getRecentDomain } from "../../utils";
   const StatusTypes = {
     LOADING: "LOADING",
     VALID_LINK: "VALID_LINK",
@@ -115,10 +115,10 @@
         );
       },
       loginLink() {
-        let subdomain = getRecentDomain();
+        /*let subdomain = getRecentDomain();
         if (subdomain) {
           return `${location.protocol}//${subdomain}.${location.host}`;
-        }
+        }*/
         return "/";
       },
       header() {

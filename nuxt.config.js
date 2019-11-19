@@ -1,4 +1,6 @@
 import colors from "vuetify/es5/util/colors"
+import createLogger from 'vuex/dist/logger'
+
 const VUE_APP_DOMAIN = {
   dev: 'localhost',
   prod: 'satlegal'
@@ -7,6 +9,10 @@ const baseUrl = process.env.NODE_ENV === 'development' ? VUE_APP_DOMAIN.dev : VU
 
 export default {
   mode: "universal",
+  // mode: "spa",
+  server: {
+    port: 9090, // default: 3000
+  },
   /*
    ** Headers of the page
    */

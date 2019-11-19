@@ -1,8 +1,10 @@
 <template>
   <router-link class="link_wp_mb"
                @click.native="$emit('click', $event)" target="_blank"
-               :to="{ name: 'userapp.member', params: { mbid: ID } }">
-    <slot>{{ $_labelMember(ID) }}</slot>
+               to="/">
+    <slot>
+      {{ $_labelMember(ID) }}
+    </slot>
   </router-link>
 </template>
 <script>

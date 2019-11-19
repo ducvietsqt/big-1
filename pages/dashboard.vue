@@ -20,6 +20,9 @@
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="primary" @click.stop="submit">Submit</v-btn>
+                <v-btn color="primary" @click.stop="submit">
+                  <v-icon>mdi-account-plus</v-icon>
+                </v-btn>
               </v-card-actions>
             </v-form>
           </v-card-text>
@@ -36,7 +39,6 @@
 </template>
 
 <script>
-    import {mapActions, mapGetters} from 'vuex'
     import ListView from "../components/matters/listView";
 
     export default {
@@ -63,9 +65,7 @@
             await this.$store.dispatch('matters/load')
         },
         computed: {
-            ...mapGetters({
-                list: "matters/list"
-            })
+
         },
         methods: {
             async submit() {

@@ -19,12 +19,10 @@ export const state = () => ({
 export const getters  = {
   workspaceMembers: state => state.members,
   workspaceProjects: state => state.projects,
-  findProjectByID: (state) => (ID) => state.projects.find(p => Math.abs(ID) === p.pk),
+
   findMemberByID: state => ID => {
-    console.log(this, state.members, ID)
-    return state.members.find(u => Math.abs(ID) === u.user.pk)
+    return state.members.find(u => Math.abs(ID) === u.userID)
   },
-  findTaskByID: (state) => (ID) => state.members.find(u => Math.abs(ID) === u.user.pk),
   findProjectByAssignedID: (state) => (ID) => {
     return state.projects.filter(p => p.members.find(u => u.pk === Math.abs(ID) && u.role === 1))
   },

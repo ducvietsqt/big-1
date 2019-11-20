@@ -1,13 +1,10 @@
 <template>
   <div>
     <div>
-      {{matters}}
+      <!--      {{matters}}-->
     </div>
     <div>
-      <div v-for="m in members" :key="m.userID">
-        {{m.name}}
-        {{m.roleTitle()}}
-      </div>
+      <!--            {{courts}}-->
     </div>
     <v-data-table :headers="headers" fixed-header
                   :items="matters"
@@ -20,12 +17,26 @@
           <i class="fa fa-external-link" aria-hidden="true"></i>
         </router-link>
       </template>
-
       <template v-slot:item.name="{ item }">
-        <input-list :value="item.name"
-                    :disabled="false"
-                    :autofocus="item.focus"
-                    @change="(val) => changeTitle(item, val)"/>
+        <div style="width: 200px">
+          <input-list :value="item.name"
+                      :disabled="false"
+                      :autofocus="item.focus"
+                      @change="(val) => changeTitle(item, val)"/>
+        </div>
+      </template>
+
+      <template v-slot:item.court="{ item }">
+        <div class="d-flex align-center" style="width: 200px">
+          <div class="flex-grow-1">
+            <template v-if="item.jurisdiction">
+              {{$_court(item.jurisdiction)['short_name']}}
+            </template>
+          </div>
+          <div class="fa-user-plus" @click="$bus.$emit('menu-absolute', $event, item.courtID, item)">
+            <v-icon small>mdi-domain</v-icon>
+          </div>
+        </div>
       </template>
 
       <template v-slot:item.risk_level="{ item }">
@@ -44,17 +55,21 @@
 
       <template v-slot:item.members="{ item }">
         <div class="d-flex align-center">
-          <div class="flex-grow-1">
-<!--            {{findMemberByID}}-->
-            <template v-for="m in item.members">
-              <member-link :key="'mb-meeting-'+m.user"
-                           v-if="m.user"
-                           :ID="m.user" class="no_content font-weight-normal">
-<!--                <span>HOIGAY{{findMemberByID(m.user)}}</span>-->
-              </member-link>
+          <div class="flex-grow-1 no_content">
+            <template v-if="item.hasMember">
+              <template v-for="m in item.members">
+                <member-link :key="'mb-meeting-'+m.user"
+                             v-if="m.user"
+                             :ID="m.user">
+                  <avatar-member :user="m.user" :size="25"></avatar-member>
+                </member-link>
+              </template>
             </template>
           </div>
-          <i class="fa fa-user-plus ml-2 fa-cell-icon" aria-hidden="true"></i>
+          <div class="fa-user-plus">
+            <v-icon small>mdi-account-plus</v-icon>
+          </div>
+
         </div>
       </template>
       <template v-slot:item.time="{ item }">
@@ -73,15 +88,34 @@
           <i class="fa fa-map-marker fa-cell-icon" aria-hidden="true"></i>
         </div>
       </template>
-      <template v-slot:item.project="{ item }">
+      <template v-slot:item.creator="{ item }">
         <div class="d-flex align-center">
           <div class="flex-grow-1">
-            <span>fdsfds</span>
+            <template v-if="item.hasCreator">
+              <member-link :ID="item.creator">
+                <avatar-member :user="item.creator" :size="25"></avatar-member>
+              </member-link>
+            </template>
           </div>
-          <i class="fa fa-folder-open fa-cell-icon" aria-hidden="true"></i>
+        </div>
+      </template>
+      <template v-slot:item.progress="{ item }">
+        <div class="d-flex align-center">
+          <div class="flex-grow-1">
+            <v-progress-linear color="blue-grey"
+                               height="25"
+                               :value="25"
+                               reactive>
+              <template v-slot="{ value }">
+                <strong>{{ Math.ceil(value) }}%</strong>
+              </template>
+            </v-progress-linear>
+          </div>
         </div>
       </template>
     </v-data-table>
+
+
   </div>
 </template>
 
@@ -105,7 +139,7 @@
                         sortable: true,
                         value: 'name',
                     },
-                    {text: 'Court District', value: 'next_courts'},
+                    {text: 'Court District', value: 'court'},
                     {text: 'Docket Number', value: 'clients'}, // N/A
                     {text: 'Priority', value: 'priority'}, // done
                     {text: 'Lead Attorneys', value: 'clients'}, // N/A
@@ -125,29 +159,40 @@
                     {text: 'Active', value: 'active'},
                     {text: 'Next Court Date', value: 'complaints'}, // N/A
                     {text: 'Members', value: 'members'}, // N/A
-                    {text: 'Progress', value: 'members'}, // N/A
+                    {text: 'Progress', value: 'progress'}, // N/A
                 ],
                 list: [],
                 totalDesserts: 0,
                 options: {
                     // itemsPerPage: 20
                 },
-                loading: true,
                 next: null
             }
         },
         computed: {
             ...mapGetters({
                 matters: "matters/list",
+                loading: "matters/pending",
                 findMemberByID: "workspace/findMemberByID",
                 members: "workspace/workspaceMembers",
+                findCourtByID: "courts/findCourtByID",
             }),
 
         },
         methods: {
-            changeTitle() {
-
+            changeTitle(item, val) {
+                console.log(item, val)
+                this.$store.dispatch("matters/updateMatter", {matterID: item.matterID, data: {name: val}})
+            },
+            changeCourts(matterID, courtID) {
+                this.$store.dispatch("matters/updateMatter", {matterID, data: {jurisdiction: courtID}})
             }
+        },
+        mounted() {
+            let _self = this;
+            this.$bus.$on("change-courts", (court, matter) => {
+                _self.changeCourts(matter.matterID, court.courtID)
+            })
         }
     }
 </script>
@@ -162,10 +207,15 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
 
     &:hover, &.active {
       background: rgba(17, 205, 239, 0.5);
       color: #fff;
+
+      * {
+        color: #fff !important;
+      }
     }
   }
 </style>

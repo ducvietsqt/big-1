@@ -1,12 +1,21 @@
 <template>
-  <router-link class="link_wp_mb"
-               @click.native="$emit('click', $event)" target="_blank"
-               to="/">
-    <slot>
-      {{ JSON.stringify($_labelMember, null, 2) }}
-<!--      {{ $_labelMember(ID)}}-->
-    </slot>
-  </router-link>
+
+
+  <v-tooltip bottom>
+    <template v-slot:activator="{ on }">
+      <span v-on="on">
+      <router-link class="link_wp_mb"
+                   @click.native="$emit('click', $event)"
+                   target="_blank"
+                   to="/">
+        <slot>
+          {{ $_labelMember(ID)}}
+        </slot>
+      </router-link>
+        </span>
+    </template>
+    <span>{{ $_labelMember(ID)}}</span>
+  </v-tooltip>
 </template>
 <script>
     export default {
@@ -20,25 +29,27 @@
 </script>
 
 <style scoped lang="scss">
-  a {
+  a.link_wp_mb {
 
     font-weight: 900;
     color: #6d42c7;
 
     &:before {
-      content: "@";
+      /*content: "@";*/
     }
   }
 
 </style>
-<style>
+<style lang="scss">
   .no_content {
     text-decoration: none !important;
     cursor: pointer !important;
   }
-  .no_content:before {
+
+  .no_content:before, .no_content a.link_wp_mb:before {
     content: "" !important;
   }
+
   .no_content.font-weight-normal {
     font-weight: normal !important;
   }

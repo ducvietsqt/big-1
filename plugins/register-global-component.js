@@ -4,6 +4,8 @@ import TextInput from '../components/utils/TextInput'
 import Priority from '../components/utils/priority/Index'
 
 import CreateMatterForm from '../components/matters/CreateMatterForm'
+import AvatarMember from '../components/matters/AvatarMember'
+import MenuAbsolute from '../components/matters/MenuAbsolute'
 
 
 // Utils
@@ -13,3 +15,5 @@ Vue.component('priority-list', Priority)
 
 // Matters
 Vue.component('create-matter-form', CreateMatterForm)
+Vue.component('avatar-member', AvatarMember)
+Vue.component('menu-absolute', MenuAbsolute)

@@ -18,11 +18,12 @@ export class Member {
     this.created = c.created
     this.creator = c.creator
 
+    this.hasAvatar = this.hasProps(this.avatar)
+  }
+  hasProps(prop) {
+    return !!prop
   }
 
-  hasAvatar() {
-    return !!this.avatar
-  }
 
   hasPhone() {
     return !!this.phone

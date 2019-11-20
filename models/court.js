@@ -15,7 +15,7 @@ export class Court {
     this.has_oral_argument_scraper = c.has_oral_argument_scraper
     this.position = c.position
     this.citation_string = c.citation_string
-    this.short_name = c.short_name
+    this.short_name = c.short_name || 'N/A'
     this.full_name = c.full_name
     this.url = c.url
     this.start_date = c.start_date

@@ -8,8 +8,8 @@ const VUE_APP_DOMAIN = {
 
 
 const APP_DOMAIN = process.env.NODE_ENV === 'development' ? VUE_APP_DOMAIN.dev : VUE_APP_DOMAIN.prod;
-// const BASE_URL = "https://satlegal.ebitc.com"
-const BASE_URL = "http://192.168.1.16:8000"
+const BASE_URL = "https://satlegal.ebitc.com"
+// const BASE_URL = "http://192.168.1.16:8000"
 
 export default {
   mode: "universal",
@@ -51,6 +51,7 @@ export default {
     '~/plugins/serverInit',
     '~/plugins/document',
     '~/plugins/register-global-component',
+    '~/plugins/eventBus',
   ],
   /*
    ** Nuxt.js dev-modules

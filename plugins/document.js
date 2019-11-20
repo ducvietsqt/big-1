@@ -7,10 +7,16 @@ Vue.mixin({
         document.title = title
       },
       $_labelMember(ID) {
-        console.log('XXXXXX',process.browser, this.$store.state.workspace,this.$store.getters['workspace/findMemberByID'])
         let u = this.$store.getters['workspace/findMemberByID'](ID)
-        console.log('MEMBER',u);
-        return u.name || u.user.name || u.username  || u.email || `@${u.user.pk}`
+        return u.name || u.username  || u.email || `@${u.userID}`
+      },
+
+      $_member(ID) {
+        try {
+          return this.$store.getters['workspace/findMemberByID'](ID)
+        }catch (e) {
+          return null
+        }
       },
       $_labelTask(ID) {
         let u = this.$store.getters['workspace/findTaskByID'](ID)
@@ -50,6 +56,14 @@ Vue.mixin({
       },
       $isUpcoming(current_date) {
         return moment(current_date).isAfter(moment(new Date()).format('YYYY-MM-DD'))
+      },
+
+      $_court(ID) {
+        try {
+          return this.$store.getters['courts/findCourtByID'](ID)
+        }catch (e) {
+          return null
+        }
       }
     },
     filters: {

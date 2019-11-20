@@ -30,7 +30,11 @@ export class Matter {
     this.next_courts = c.next_courts || []
     this.creator = c.creator
 
+    // todo action tracking
     this.canUpdate = false
+    this.hasCreator = this.hasProps(this.creator)
+    this.hasMember = !this.emptyProp(this.members);
+    this.hasClient = !this.emptyProp(this.clients);
 
 
   }
@@ -44,11 +48,14 @@ export class Matter {
   suggestionLabel() {
     return this.name || this.matterID || ''
   }
-
-  // members
-  hasMember() {
-    return this.members.length > 0
+  hasProps(prop) {
+    return !!prop
   }
+  emptyProp(prop) {
+    return Array.isArray(prop) && prop.length <= 0
+  }
+  // members
+
   isMember(userID) {
     return this.members.indexOf(userID) !== -1
   }
@@ -84,9 +91,6 @@ export class Matter {
   }
 
   // clients
-  hasClient() {
-    return this.clients.length > 0
-  }
 
   clientsMatter() {
     return [...this.clients].map(cl => new Client(cl))

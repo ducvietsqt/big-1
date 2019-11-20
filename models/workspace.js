@@ -67,19 +67,16 @@ export class Member {
 
 }
 
-let a = {
-  "user": {
-    "pk": 3,
-    "name": "user1@example.com",
-    "avatar": null,
-    "email": "user1@example.com",
-    "username": "55a2f8c0-41c3-4df7-ab6f-293692ab6674",
-    "first_name": "",
-    "last_name": "",
-    "phone": "",
-    "birthday": null
-  },
-  "role": 3,
-  "created": "2019-07-18T16:40:30.831887Z",
-  "creator": 2
+
+export class MatterType {
+  constructor(c) {
+    if (!c) {
+      return
+    }
+    this.typeID = c.pk
+    this.name = c.name
+    this.color = c.color
+  }
+
 }
+

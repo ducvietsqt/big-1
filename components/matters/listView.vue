@@ -40,10 +40,12 @@
               {{$_court(item.jurisdiction)['short_name']}}
             </template>
           </div>
-          <div class="fa-user-plus1" @click="$bus.$emit('menu-absolute', $event, item.courtID, item)">
-            <!--<v-icon small>fas fa-location-arrow</v-icon>-->
-            <!--<i class="fas fa-location-arrow"></i>-->
-            <i class="fas fa-map-marker-alt"></i>
+          <div>
+            <div class="fa-user-plus1" @click="$bus.$emit('menu-absolute', $event, item.courtID, item)">
+              <!--<v-icon small>fas fa-location-arrow</v-icon>-->
+              <!--<i class="fas fa-location-arrow"></i>-->
+              <i class="fas fa-map-marker-alt"></i>
+            </div>
           </div>
         </div>
       </template>
@@ -125,17 +127,64 @@
       <template v-slot:item.progress="{ item }">
         <div class="d-flex align-center">
           <div class="flex-grow-1">
-            <v-progress-linear color="blue-grey"
-                               height="25"
+            <v-progress-linear color="#5e72e4"
+                               height="15"
                                :value="25"
                                reactive>
               <template v-slot="{ value }">
-                <strong>{{ Math.ceil(value) }}%</strong>
+                <strong style="font-size: 75%">{{ Math.ceil(value) }}%</strong>
               </template>
             </v-progress-linear>
           </div>
         </div>
       </template>
+      <template v-slot:item.active="{ item }">
+        <div class="d-flex align-center">
+          <div class="flex-grow-1">
+            <span v-if="item.activate" class="badge badge-success">
+                          active
+                        </span>
+            <span v-else class="badge badge-warning">
+                          inactive
+                        </span>
+
+          </div>
+        </div>
+      </template>
+      <template v-slot:item.clients="{ item }">
+        <div class="d-flex align-center">
+          <div class="flex-grow-1">
+            <span v-if="item.activate" class="badge badge-success">
+                          active
+                        </span>
+            <span v-else class="badge badge-warning">
+                          inactive
+                        </span>
+
+          </div>
+        </div>
+      </template>
+      <template v-slot:item.types="{ item }">
+        <div class="d-flex align-center" style="width: 200px;">
+          <div class="flex-grow-1" style="max-width: 100%">
+            <div style="white-space: normal" class="py-2">
+              <span class="badge badge-pill badge-info text-capitalize" style="padding: 5px 10px; margin: 2px 2px"
+                    :style="{background: '#'+tag.color, color:'#fff'}"
+                    v-for="(tag) in item.types"
+                    :key="'tag-column-'+tag.pk">
+                          {{tag.name}}
+                        </span>
+            </div>
+          </div>
+          <div>
+            <div class="fa-user-plus1 ml-2" @click="$bus.$emit('menu-types', $event, item.types, item)">
+              <i class="fa fa-tag" aria-hidden="true"></i>
+            </div>
+          </div>
+        </div>
+      </template>
+
+
     </v-data-table>
 
 
@@ -173,24 +222,24 @@
           { text: 'Court District', value: 'court' },
           { text: 'Members', value: 'members' }, // N/A
           { text: 'Progress', value: 'progress' }, // N/A
-          { text: 'Docket Number', value: 'clients' }, // N/A
+          { text: 'Docket Number', value: 'docket_number' }, // N/A
           { text: 'Priority', value: 'priority' }, // done
-          { text: 'Lead Attorneys', value: 'clients' }, // N/A
+          { text: 'Lead Attorneys', value: 'lead_attorneys' }, // N/A
           { text: 'Matter Type ', value: 'types' },
 
           { text: 'Start Date', value: 'start_date' },
           { text: 'Time Est. ', value: 'est_time' },
-          { text: 'Total Time Logged', value: 'clients' },
-          { text: 'Total Billable Hours', value: 'clients' }, // N/A
+          { text: 'Total Time Logged', value: 'total_time' },
+          { text: 'Total Billable Hours', value: 'total_hours' }, // N/A
           { text: 'Risk Level', value: 'risk_level' },
-          { text: 'Matter Stage', value: 'clients' },
-          { text: 'Total Expense ', value: 'clients' },
-          { text: 'Judge', value: 'clients' }, // N/A
+          { text: 'Matter Stage', value: 'matter_stage' },
+          { text: 'Total Expense ', value: 'total_expense' },
+          { text: 'Judge', value: 'judge' }, // N/A
           { text: 'Date Filed', value: 'date_filled' },
           { text: 'Jury Demand', value: 'jury_demand' },
           { text: 'Client', value: 'clients' },
           { text: 'Active', value: 'active' },
-          { text: 'Next Court Date', value: 'complaints' }, // N/A
+          { text: 'Next Court Date', value: 'complaints' } // N/A
 
         ],
         list: [],

@@ -1,4 +1,4 @@
-import {Client} from '../models/client'
+import { MatterType } from '../models/workspace'
 
 const types = {
   pending: 'pending',
@@ -24,13 +24,13 @@ export const getters = {
   // byPriority: (state, getters) => (priority) => getters.list.filter(c => c.priority === priority),
 
   // Find client by ID
-  findClientByID: (state, getters) => (ID) => {  // eslint-disable-line
-    return getters.list.filter(cl => cl.clientID === ID)[0] || undefined
+  findMatterTypeByID: (state, getters) => (ID) => {  // eslint-disable-line
+    return getters.list.filter(cl => cl.typeID === ID)[0] || undefined
   },
 
 };
+const base = '/api/matter-types/'
 
-const base = "/api/clients/"
 export const actions = {
   // Loads & transforms all channels
   async load({commit}) { // eslint-disable-line
@@ -39,7 +39,7 @@ export const actions = {
       let list = [];
       this.$axios.get(base).then(rs => {
         list = rs.data
-        list = list.map(i => new Client(i))
+        list = list.map(i => new MatterType(i))
         commit(types.resetList, list)
         resolve(list)
       }).finally(() => {
@@ -48,11 +48,11 @@ export const actions = {
       })
     })
   },
-  async createClient({commit}, data) { // eslint-disable-line
+  async createType({commit}, data) { // eslint-disable-line
     commit(types.pending)
     return new Promise((resolve) => {
       this.$axios.post(base, data).then(rs => {
-        let client = new Client(rs.data)
+        let client = new MatterType(rs.data)
         commit(types.updateList, client)
         resolve(client)
       }).finally(() => {
@@ -61,11 +61,11 @@ export const actions = {
       })
     })
   },
-  async updateClient({commit}, {data, clientID}) { // eslint-disable-line
+  async updateType({commit}, {data, clientID}) { // eslint-disable-line
     commit(types.pending)
     return new Promise((resolve) => {
       this.$axios.patch(base + clientID + "/", data).then(rs => {
-        let client = new Client(rs.data)
+        let client = new MatterType(rs.data)
         commit(types.updateList, client)
         resolve(client)
       }).finally(() => {
@@ -74,12 +74,12 @@ export const actions = {
       })
     })
   },
-  async removeClient({commit}, {clientID}) { // eslint-disable-line
+  async removeType({commit}, {typeID}) { // eslint-disable-line
     commit(types.pending)
     return new Promise((resolve) => {
-      this.$axios.delete(base + clientID + "/").then(rs => {
-        commit(types.removeFromList, {ID: clientID})
-        resolve(clientID)
+      this.$axios.delete(base + typeID + "/").then(rs => {
+        commit(types.removeFromList, {ID: typeID})
+        resolve(typeID)
       }).finally(() => {
         commit(types.completed)
         resolve('done')

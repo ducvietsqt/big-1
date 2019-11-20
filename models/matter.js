@@ -8,7 +8,6 @@ export class Matter {
       this.members = []
       return
     }
-
     this.matterID = c.id
     this.courtID = c.court || 'ca1'
     this.name = c.name || 'N/A'

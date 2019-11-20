@@ -9,6 +9,9 @@ import MenuPriority from '../components/matters/MenuPriority'
 import PriorityList from '../components/matters/PriorityList'
 import MenuMember from '../components/matters/MenuMember'
 import MemberList from '../components/matters/MemberList'
+import MenuTypeList from '../components/matters/MenuTypeList'
+import TypeList from '../components/matters/TypeList'
+
 
 
 // Utils
@@ -25,3 +28,8 @@ Vue.component('priority-list', PriorityList)
 
 Vue.component('menu-member', MenuMember)
 Vue.component('member-list', MemberList)
+
+Vue.component('menu-types', MenuTypeList)
+Vue.component('type-list', TypeList)
+
+

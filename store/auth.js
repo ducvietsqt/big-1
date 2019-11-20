@@ -1,7 +1,8 @@
 import {SESSION} from "../utils";
 // initial state
 import Cookies from 'js-cookie';
-
+// const tk = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxNCwidXNlcm5hbWUiOiJ2aWV0QG1haWxpbmF0b3IuY29tIiwiZXhwIjoxNTgxOTAwNTY4LCJlbWFpbCI6InZpZXRAbWFpbGluYXRvci5jb20iLCJzZXNzaW9uX2lkIjoiYmUxYTkzZmQtZmUxMC00NmYzLWJkYzYtOTEwODM3NzFjNjE4Iiwid29ya3NwYWNlIjoic2F0bGVnYWwxIiwid29ya3NwYWNlX3JvbGUiOjF9.EJslvJ9xjYgjAfHkVE_JnWpCxYbcxXsMWY3Q5KF-n7c'
+const tk = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyLCJ1c2VybmFtZSI6InVzZXIxQGVtYWlsLmNvbSIsImV4cCI6MTU3OTc1MTExNCwiZW1haWwiOiJ1c2VyMUBlbWFpbC5jb20iLCJzZXNzaW9uX2lkIjoiZmQ1YTZlMjQtZGE3NS00MzUxLTliOTEtZDdjYjBmNTY2ODYyIiwid29ya3NwYWNlIjoiZG9uZ2EiLCJ3b3Jrc3BhY2Vfcm9sZSI6MX0.yim_XcCd3YU-Usd-Cl1YZayxboz8xlGSMkEiyrCjgds'
 export const state = () => {
   let token = ''
   return {
@@ -20,21 +21,15 @@ const getters = {
 export const actions = {
   // nuxtServerInit is called by Nuxt.js before server-rendering every page
   async nuxtServerInit({commit, dispatch}, {req}) {
-    return new Promise((resolve) => {
-      let token = Cookies.get(SESSION.TOKEN)
-      if (token) {
-        commit('authToken', {token})
-        this.$axios.setToken("JWT " + token);
-        let user;
-        this.$axios.get("/api/users/me").then(rs => {
-          user = rs.data
-          commit('authSuccess', {user: rs.data, token})
-        }).finally(() => {
-          resolve(1)
-        })
-        // console.log('USER', user.data)
-      }
-    })
+    // let token = Cookies.get(SESSION.TOKEN)
+    let token = Cookies.get(SESSION.TOKEN) || tk
+    if (token) {
+      commit('authToken', {token})
+      this.$axios.setToken("JWT " + token);
+      let rs = await this.$axios.get("/api/users/me")
+      commit('authSuccess', {user: rs.data, token})
+      // console.log('USER', user.data)
+    }
 
   },
   getUser({commit}) {
@@ -92,7 +87,9 @@ export const actions = {
       Cookies.remove(SESSION.TOKEN);
       resolve();
     });
-  }
+  },
+
+  // load court /api/courts/
 };
 
 // mutations

@@ -1,3 +1,6 @@
+import {Client} from "~/models/client";
+import {Member} from "~/models/workspace";
+
 export class Matter {
   constructor(c) {
     this.canUpdate = true
@@ -7,6 +10,7 @@ export class Matter {
     }
 
     this.matterID = c.id
+    this.courtID = c.court || 'ca1'
     this.name = c.name || 'N/A'
     this.clients = c.clients || []
     this.intro = c.intro
@@ -41,10 +45,13 @@ export class Matter {
     return this.name || this.matterID || ''
   }
 
+  // members
+  hasMember() {
+    return this.members.length > 0
+  }
   isMember(userID) {
     return this.members.indexOf(userID) !== -1
   }
-
   removeMember(user) {
     const ID = (user || {}).id || user
     this.members = this.members.filter(m => m !== ID)
@@ -57,6 +64,7 @@ export class Matter {
   isValid() {
     return !this.deletedAt && !this.archivedAt
   }
+
   // single select N/A, very low, low, normal, high, very high
   riskLevel(riskLevel = true) {
     switch (riskLevel ? this.risk_level : this.priority) {
@@ -73,6 +81,15 @@ export class Matter {
       default:
         return 'N/A'
     }
+  }
+
+  // clients
+  hasClient() {
+    return this.clients.length > 0
+  }
+
+  clientsMatter() {
+    return [...this.clients].map(cl => new Client(cl))
   }
 
 }

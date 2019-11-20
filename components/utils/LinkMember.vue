@@ -3,7 +3,8 @@
                @click.native="$emit('click', $event)" target="_blank"
                to="/">
     <slot>
-      {{ $_labelMember(ID) }}
+      {{ JSON.stringify($_labelMember, null, 2) }}
+<!--      {{ $_labelMember(ID)}}-->
     </slot>
   </router-link>
 </template>

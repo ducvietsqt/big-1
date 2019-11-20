@@ -13,18 +13,7 @@
         <v-card max-width="350">
           <v-card-title>Create matter</v-card-title>
           <v-card-text>
-            <v-form lazy-validation @submit.prevent="submit">
-              <v-text-field v-model="name"
-                            label="Matter Name"
-                            required></v-text-field>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="primary" @click.stop="submit">Submit</v-btn>
-                <v-btn color="primary" @click.stop="submit">
-                  <v-icon>mdi-account-plus</v-icon>
-                </v-btn>
-              </v-card-actions>
-            </v-form>
+              <create-matter-form/>
           </v-card-text>
         </v-card>
         <ListView/>
@@ -67,11 +56,7 @@
         computed: {
 
         },
-        methods: {
-            async submit() {
-                await this.$store.dispatch("matters/createMatter", {name: this.name})
-            }
-        }
+
     }
 </script>
 

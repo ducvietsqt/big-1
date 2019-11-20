@@ -1,5 +1,6 @@
-
 // initial state
+import {Member} from "~/models/workspace";
+
 const types = {
   pending: 'pending',
   completed: 'completed',
@@ -14,11 +15,7 @@ export const state = () => ({
     labels: [],
     projects: [],
 });
-/*export const getters = {
-  getName: (state) => {
-    return state.mistica.name
-  }
-}*/
+
 export const getters  = {
   workspaceMembers: state => state.members,
   workspaceProjects: state => state.projects,
@@ -35,18 +32,13 @@ export const getters  = {
 };
 
 export const actions = {
-  async nuxtServerInit({commit, dispatch}, {req}) {
-    // todo: load members workspace
-    dispatch("workspace/loadMembers")
-    console.log('loadMembers',this)
-  },
   async loadMembers({commit, state}) { // eslint-disable-line
     // commit(types.pending)
     return new Promise((resolve) => {
       let members = [];
       this.$axios.get("/api/workspace/members/").then(rs => {
         console.log('members', rs.data)
-        members = rs.data
+        members = rs.data.map(m => new Member(m))
         commit(types.resetMembers, members)
         resolve(members)
       }).finally(() => {

@@ -5,14 +5,16 @@ const VUE_APP_DOMAIN = {
   dev: 'localhost',
   prod: 'satlegal'
 };
-const baseUrl = process.env.NODE_ENV === 'development' ? VUE_APP_DOMAIN.dev : VUE_APP_DOMAIN.prod;
+
+
+const APP_DOMAIN = process.env.NODE_ENV === 'development' ? VUE_APP_DOMAIN.dev : VUE_APP_DOMAIN.prod;
+// const BASE_URL = "https://satlegal.ebitc.com"
+const BASE_URL = "http://192.168.1.16:8000"
 
 export default {
   mode: "universal",
   // mode: "spa",
-  server: {
-    port: 9090, // default: 3000
-  },
+
   /*
    ** Headers of the page
    */
@@ -74,7 +76,7 @@ export default {
    ** See https://axios.nuxtjs.org/options
    */
   axios: {
-    baseURL: "https://satlegal.ebitc.com"
+    baseURL: BASE_URL
   },
   /*
    ** vuetify module configuration
@@ -118,7 +120,7 @@ export default {
   /*
   ***/
   env: {
-    baseUrl: baseUrl,
+    baseUrl: APP_DOMAIN,
     title: 'SatLegal'
   },
 

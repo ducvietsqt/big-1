@@ -1,6 +1,14 @@
 <template>
   <div>
-    {{matters}}
+    <div>
+      {{matters}}
+    </div>
+    <div>
+      <div v-for="m in members" :key="m.userID">
+        {{m.name}}
+        {{m.roleTitle()}}
+      </div>
+    </div>
     <v-data-table :headers="headers" fixed-header
                   :items="matters"
                   hide-default-footer
@@ -132,6 +140,7 @@
             ...mapGetters({
                 matters: "matters/list",
                 findMemberByID: "workspace/findMemberByID",
+                members: "workspace/workspaceMembers",
             }),
 
         },

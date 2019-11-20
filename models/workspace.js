@@ -1,5 +1,4 @@
 export class Member {
-  #userID
   constructor(c) {
     if (!c) {
       return

@@ -1,5 +1,5 @@
 import colors from "vuetify/es5/util/colors"
-import createLogger from 'vuex/dist/logger'
+// import '@fortawesome/fontawesome-free/css/all.css'
 
 const VUE_APP_DOMAIN = {
   dev: 'localhost',
@@ -41,7 +41,8 @@ export default {
    ** Global CSS
    */
   css: [
-    "~/assets/main.css"
+    "~/assets/main.css",
+    "@fortawesome/fontawesome-free/css/all.css"
   ],
   /*
    ** Plugins to load before mounting the App
@@ -86,7 +87,13 @@ export default {
   vuetify: {
     customVariables: ["~/assets/variables.scss"],
     icons: {
-      iconfont: 'mdi',
+      // iconfont: 'md',
+      // iconfont: 'mdi',
+      // iconfont: 'fa',
+      iconfont: 'fa4',
+      // iconfont: 'mdiSvg',
+      // iconfont: 'mdiSvg', // 'mdi' || 'mdiSvg' || 'md' || 'fa' || 'fa4'
+
     },
     theme: {
       // dark: true,

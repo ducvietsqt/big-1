@@ -12,6 +12,8 @@
       <v-container fluid>
         <ListView/>
         <menu-absolute></menu-absolute>
+        <menu-priority></menu-priority>
+        <menu-member></menu-member>
         <!-- If using vue-router -->
         <v-menu offset-y :close-on-content-click="false" top right>
           <template v-slot:activator="{ on }">

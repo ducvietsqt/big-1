@@ -29,7 +29,7 @@
         try {
           console.log(types)
           _self.show(e)
-          let _types = types.map(mb => this.findMatterTypeByID(mb.pk))
+          let _types = types.map(mb => _self.findMatterTypeByID(mb.pk))
           _self.temp = {types: _types, matter}
           _self.friends = _types
         } catch (e) {
@@ -39,7 +39,7 @@
     },
     computed: {
       ...mapGetters({
-        findMatterByID: "types/findMatterByID",
+        findMatterTypeByID: "types/findMatterTypeByID",
         pending: "types/pending",
       })
     },

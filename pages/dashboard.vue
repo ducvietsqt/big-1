@@ -3,29 +3,38 @@
     <v-navigation-drawer app>
       <!-- -->
     </v-navigation-drawer>
-    <v-app-bar app>
+    <v-app-bar app flat>
       <!-- -->
     </v-app-bar>
     <!-- Sizes your content based upon application components -->
     <v-content>
       <!-- Provides the application the proper gutter -->
       <v-container fluid>
-        <v-card max-width="350">
-          <v-card-title>Create matter</v-card-title>
-          <v-card-text>
-            <v-form lazy-validation @submit.prevent="submit">
-              <v-text-field v-model="name"
-                            label="Matter Name"
-                            required></v-text-field>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="primary" @click.stop="submit">Submit</v-btn>
-              </v-card-actions>
-            </v-form>
-          </v-card-text>
-        </v-card>
         <ListView/>
+        <menu-absolute></menu-absolute>
+        <menu-priority></menu-priority>
+        <menu-member></menu-member>
+        <menu-type-list></menu-type-list>
         <!-- If using vue-router -->
+        <v-menu offset-y :close-on-content-click="false" top right>
+          <template v-slot:activator="{ on }">
+            <v-btn v-on="on" color="pink"
+                   fab
+                   dark
+                   small
+                   fixed
+                   bottom
+                   right>
+              <v-icon>mdi-plus</v-icon>
+            </v-btn>
+          </template>
+          <v-card max-width="350">
+            <v-card-title>Create matter</v-card-title>
+            <v-card-text>
+              <create-matter-form/>
+            </v-card-text>
+          </v-card>
+        </v-menu>
       </v-container>
     </v-content>
 
@@ -36,11 +45,11 @@
 </template>
 
 <script>
-    import {mapActions, mapGetters} from 'vuex'
     import ListView from "../components/matters/listView";
+    import MenuTypeList from '../components/matters/MenuTypeList'
 
     export default {
-        components: {ListView},
+        components: { MenuTypeList, ListView},
         layout: "app",
         head() {
             return {
@@ -63,15 +72,9 @@
             await this.$store.dispatch('matters/load')
         },
         computed: {
-            ...mapGetters({
-                list: "matters/list"
-            })
+
         },
-        methods: {
-            async submit() {
-                await this.$store.dispatch("matters/createMatter", {name: this.name})
-            }
-        }
+
     }
 </script>
 

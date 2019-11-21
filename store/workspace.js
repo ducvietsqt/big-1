@@ -1,5 +1,6 @@
-
 // initial state
+import {Member} from "~/models/workspace";
+
 const types = {
   pending: 'pending',
   completed: 'completed',
@@ -9,20 +10,20 @@ const types = {
   resetLabels: 'resetLabels',
 }
 
-export const state = () => {
-  return {
+export const state = () => ({
     members: [],
     labels: [],
     projects: [],
-  }
-};
+});
 
-const getters = {
+export const getters  = {
+  pending: state => state.pending,
   workspaceMembers: state => state.members,
   workspaceProjects: state => state.projects,
-  findProjectByID: (state) => (ID) => state.projects.find(p => Math.abs(ID) === p.pk),
-  findMemberByID: (state) => (ID) => state.members.find(u => Math.abs(ID) === u.user.pk),
-  findTaskByID: (state) => (ID) => state.members.find(u => Math.abs(ID) === u.user.pk),
+
+  findMemberByID: state => ID => {
+    return state.members.find(u => Math.abs(ID) === u.userID)
+  },
   findProjectByAssignedID: (state) => (ID) => {
     return state.projects.filter(p => p.members.find(u => u.pk === Math.abs(ID) && u.role === 1))
   },
@@ -30,17 +31,13 @@ const getters = {
 };
 
 export const actions = {
-  async nuxtServerInit({commit}, {req}) {
-    // todo: load members workspace
-    // todo: load matter workspace
-  },
   async loadMembers({commit, state}) { // eslint-disable-line
-    commit(types.pending)
+    // commit(types.pending)
     return new Promise((resolve) => {
       let members = [];
       this.$axios.get("/api/workspace/members/").then(rs => {
         console.log('members', rs.data)
-        members = rs.data.results
+        members = rs.data.map(m => new Member(m))
         commit(types.resetMembers, members)
         resolve(members)
       }).finally(() => {

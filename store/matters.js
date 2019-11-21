@@ -23,7 +23,7 @@ export const getters = {
   list: (state) => state.list.filter(c => !c.archive),
 
   // Return private & public Matters
-  byPriority: (state, getters) => (priority) => getters.list.filter(c => c.priority === priority),
+  // byPriority: (state, getters) => (priority) => getters.list.filter(c => c.priority === priority),
 
   // Find matter by ID
   findMatterByID: (state, getters) => (ID) => {  // eslint-disable-line
@@ -67,8 +67,11 @@ export const actions = {
       this.$axios.post("/api/matters/", data).then(rs => {
         let matter = new Matter(rs.data);
         commit(types.updateList, matter)
+        resolve(true)
       }).finally(() => {
         commit(types.completed)
+      }).catch(() => {
+        resolve(false)
       })
     })
   },

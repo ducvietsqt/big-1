@@ -1,12 +1,20 @@
 import colors from "vuetify/es5/util/colors"
+// import '@fortawesome/fontawesome-free/css/all.css'
+
 const VUE_APP_DOMAIN = {
   dev: 'localhost',
   prod: 'satlegal'
 };
-const baseUrl = process.env.NODE_ENV === 'development' ? VUE_APP_DOMAIN.dev : VUE_APP_DOMAIN.prod;
+
+
+const APP_DOMAIN = process.env.NODE_ENV === 'development' ? VUE_APP_DOMAIN.dev : VUE_APP_DOMAIN.prod;
+const BASE_URL = "https://satlegal.ebitc.com"
+// const BASE_URL = "http://192.168.1.16:8000"
 
 export default {
   mode: "universal",
+  // mode: "spa",
+
   /*
    ** Headers of the page
    */
@@ -33,7 +41,8 @@ export default {
    ** Global CSS
    */
   css: [
-    "~/assets/main.css"
+    "~/assets/main.css",
+    "@fortawesome/fontawesome-free/css/all.css"
   ],
   /*
    ** Plugins to load before mounting the App
@@ -43,6 +52,7 @@ export default {
     '~/plugins/serverInit',
     '~/plugins/document',
     '~/plugins/register-global-component',
+    '~/plugins/eventBus',
   ],
   /*
    ** Nuxt.js dev-modules
@@ -68,7 +78,7 @@ export default {
    ** See https://axios.nuxtjs.org/options
    */
   axios: {
-    baseURL: "https://satlegal.ebitc.com"
+    baseURL: BASE_URL
   },
   /*
    ** vuetify module configuration
@@ -77,7 +87,13 @@ export default {
   vuetify: {
     customVariables: ["~/assets/variables.scss"],
     icons: {
-      iconfont: 'mdi',
+      // iconfont: 'md',
+      // iconfont: 'mdi',
+      // iconfont: 'fa',
+      iconfont: 'fa4',
+      // iconfont: 'mdiSvg',
+      // iconfont: 'mdiSvg', // 'mdi' || 'mdiSvg' || 'md' || 'fa' || 'fa4'
+
     },
     theme: {
       // dark: true,
@@ -112,7 +128,7 @@ export default {
   /*
   ***/
   env: {
-    baseUrl: baseUrl,
+    baseUrl: APP_DOMAIN,
     title: 'SatLegal'
   },
 

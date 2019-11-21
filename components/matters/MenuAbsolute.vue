@@ -6,11 +6,11 @@
           :close-on-content-click="false"
           offset-y>
     <v-card v-if="showMenu" :loading="pending">
-      <v-card-text class="pa-1">
         <v-autocomplete background-color="white"
                         v-model="friends"
                         :items="courts"
-                        filled dense
+                        solo
+                        dense
                         return-object
                         hide-details
                         color="blue-grey lighten-2"
@@ -18,16 +18,15 @@
                         item-text="short_name"
                         item-value="courtID" @change="change">
           <template v-slot:item="data">
-            <v-list-item-avatar color="primary">
-              <span class="white--text">{{data.item.short_name | $strName}}</span>
-            </v-list-item-avatar>
+            <!--<v-list-item-avatar color="primary">
+              <span class="white&#45;&#45;text">{{data.item.short_name | $strName}}</span>
+            </v-list-item-avatar>-->
             <v-list-item-content>
               <v-list-item-title v-html="data.item.short_name"></v-list-item-title>
               <v-list-item-subtitle v-html="data.item.full_name"></v-list-item-subtitle>
             </v-list-item-content>
           </template>
         </v-autocomplete>
-      </v-card-text>
     </v-card>
   </v-menu>
 </template>

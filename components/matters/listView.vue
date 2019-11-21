@@ -37,7 +37,8 @@
         <div class="d-flex align-center" style="width: 200px">
           <div class="flex-grow-1">
             <template v-if="item.jurisdiction">
-              {{$_court(item.jurisdiction)['short_name']}}
+<!--              {{$_court(item.jurisdiction)['short_name']}}-->
+              {{item.jurisdiction['short_name']}}
             </template>
           </div>
           <div>

@@ -40,6 +40,9 @@ export default {
    */
   css: [
     "~/assets/main.css",
+    "~/assets/argon.min.css",
+    "~/assets/docs.min.css",
+
     "@fortawesome/fontawesome-free/css/all.css"
   ],
   /*

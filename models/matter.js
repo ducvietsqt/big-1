@@ -1,6 +1,3 @@
-import {Client} from "~/models/client";
-import {Member} from "~/models/workspace";
-
 export class Matter {
   constructor(c) {
     this.canUpdate = true
@@ -74,7 +71,8 @@ export class Matter {
   isValid() {
     return !this.deletedAt && !this.archivedAt
   }
-
+  // format date
+  
   // single select N/A, very low, low, normal, high, very high
   levelTitle(level) {
     switch (level) {
@@ -109,10 +107,6 @@ export class Matter {
     }
   }
 
-  // clients
 
-  clientsMatter() {
-    return [...this.clients].map(cl => new Client(cl))
-  }
 
 }

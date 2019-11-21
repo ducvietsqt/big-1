@@ -1,4 +1,4 @@
-.page-enter-active, .page-leave-active {
+\.page-enter-active, .page-leave-active {
     transition: opacity .5s;
 }
 .page-enter, .page-leave-to {
@@ -6,4 +6,7 @@
 }
 .link_bt {
   text-decoration: none;
+}
+.cusor--pointer {
+  cursor: pointer !important;
 }

@@ -2,18 +2,16 @@ import colors from "vuetify/es5/util/colors"
 // import '@fortawesome/fontawesome-free/css/all.css'
 
 const VUE_APP_DOMAIN = {
-  dev: 'localhost',
-  prod: 'satlegal'
-};
+  dev: "localhost",
+  prod: "satlegal"
+}
 
-
-const APP_DOMAIN = process.env.NODE_ENV === 'development' ? VUE_APP_DOMAIN.dev : VUE_APP_DOMAIN.prod;
-const BASE_URL = "https://satlegal.ebitc.com"
-// const BASE_URL = "http://192.168.1.16:8000"
+const APP_DOMAIN = process.env.NODE_ENV === 'development' ? VUE_APP_DOMAIN.dev : VUE_APP_DOMAIN.prod
+// const BASE_URL = "https://satlegal.ebitc.com"
+const BASE_URL = "http://localhost:8000"
 
 export default {
   mode: "universal",
-  // mode: "spa",
 
   /*
    ** Headers of the page
@@ -48,11 +46,11 @@ export default {
    ** Plugins to load before mounting the App
    */
   plugins: [
-    '~/plugins/axios',
-    '~/plugins/serverInit',
-    '~/plugins/document',
-    '~/plugins/register-global-component',
-    '~/plugins/eventBus',
+    "~/plugins/axios",
+    "~/plugins/serverInit",
+    "~/plugins/document",
+    "~/plugins/register-global-component",
+    "~/plugins/eventBus"
   ],
   /*
    ** Nuxt.js dev-modules
@@ -60,7 +58,8 @@ export default {
   buildModules: [
     // Doc: https://github.com/nuxt-community/eslint-module
     // '@nuxtjs/eslint-module',
-    "@nuxtjs/vuetify"
+    "@nuxtjs/vuetify",
+    "@nuxtjs/dotenv"
   ],
   /*
    ** Nuxt.js modules
@@ -90,7 +89,7 @@ export default {
       // iconfont: 'md',
       // iconfont: 'mdi',
       // iconfont: 'fa',
-      iconfont: 'fa4',
+      iconfont: "fa4"
       // iconfont: 'mdiSvg',
       // iconfont: 'mdiSvg', // 'mdi' || 'mdiSvg' || 'md' || 'fa' || 'fa4'
 
@@ -100,7 +99,7 @@ export default {
       dark: false,
       themes: {
         light: {
-          primary: "#6d42c7",
+          primary: "#6d42c7"
         },
         dark: {
           primary: "#6d42c7",
@@ -122,14 +121,14 @@ export default {
     /*
      ** You can extend webpack config here
      */
-    extend(config, ctx) {
+    extend (config, ctx) {
     }
   },
   /*
   ***/
   env: {
     baseUrl: APP_DOMAIN,
-    title: 'SatLegal'
-  },
+    title: "SatLegal"
+  }
 
 }

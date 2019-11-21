@@ -17,7 +17,6 @@
           data-vv-name="new_password1"
           data-vv-as="password"
           outlined
-          :error-messages="errors.collect('new_password1')"
           required
         />
         <v-text-field
@@ -29,7 +28,6 @@
           type="password"
           style="border-width: 1px;"
           outlined
-          :error-messages="errors.collect('new_password2')"
           required
         />
         <v-btn
@@ -131,7 +129,7 @@ export default {
   },
   created () {
     // /password-reset/confirm/MTQ/582-7eaceed881cdc27447a3
-    this.$http
+    this.$axios
       .get(
         `/api/users/auth/password/reset/check/${this.$route.params.uid}/${
           this.$route.params.token

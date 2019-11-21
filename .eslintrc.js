@@ -14,5 +14,6 @@ module.exports = {
   ],
   // add your custom rules here
   rules: {
+     "quotes": [2, "double", { "avoidEscape": true }],
   }
 }

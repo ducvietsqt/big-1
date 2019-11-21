@@ -1,13 +1,13 @@
 <template>
-<div>
+  <div>
     sign up
-</div>
+  </div>
 </template>
 
 <script>
-  export default {
-    name: "signup"
-  }
+export default {
+  name: "signup"
+}
 </script>
 
 <style scoped>

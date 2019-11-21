@@ -37,7 +37,7 @@
         <div class="d-flex align-center" style="width: 200px">
           <div class="flex-grow-1">
             <template v-if="item.jurisdiction">
-<!--              {{$_court(item.jurisdiction)['short_name']}}-->
+              <!--              {{$_court(item.jurisdiction)['short_name']}}-->
               {{item.jurisdiction['short_name']}}
             </template>
           </div>
@@ -58,12 +58,10 @@
       <template v-slot:item.priority="{ item }">
         <div class="d-flex align-center" style="width: 100px">
           <div class="flex-grow-1">
-            <div class="d-flex align-center">
-              <span class="badge"
-                    :style="{background: $hexToRgbA(item.priorityColor), color: item.priorityColor}">
+            <span class="badge d-block"
+                  :style="{background: $hexToRgbA(item.priorityColor), color: item.priorityColor}">
                           {{item.priorityLevel}}
                         </span>
-            </div>
           </div>
           <div class="fa-user-plus1 ml-2" @click="$bus.$emit('menu-priority', $event, item.priority, item)">
             <v-icon small :color="item.priorityColor">fas fa-angle-double-up</v-icon>
@@ -130,7 +128,7 @@
           <div class="flex-grow-1">
             <v-progress-linear color="#5e72e4"
                                height="15"
-                               :value="25"
+                               :value="item.progress"
                                reactive>
               <template v-slot="{ value }">
                 <strong style="font-size: 75%">{{ Math.ceil(value) }}%</strong>
@@ -169,7 +167,8 @@
         <div class="d-flex align-center" style="width: 200px;">
           <div class="flex-grow-1" style="max-width: 100%">
             <div style="white-space: normal" class="py-2">
-              <span class="badge badge-pill badge-info text-capitalize" style="padding: 5px 10px; margin: 2px 2px"
+              <span class="badge badge-pill badge-info text-capitalize d-inline-block badge-tag"
+                    style="padding: 5px 10px; margin: 2px 2px"
                     :style="{background: '#'+tag.color, color:'#fff'}"
                     v-for="(tag) in item.types"
                     :key="'tag-column-'+tag.pk">
@@ -184,6 +183,74 @@
           </div>
         </div>
       </template>
+      <template v-slot:item.start_date="{ item }">
+        <div class="d-flex align-center">
+          <div class="flex-grow-1">
+            <p v-if="item.start_date" class="caption ma-0">
+              {{$formatDateTime(item.start_date, 'MMM Do YY')}}
+            </p>
+          </div>
+          <div>
+            <div class="fa-user-plus1 ml-2"
+                 @click="$bus.$emit('menu-matter-date', $event, item.start_date, item, 'start_date')">
+              <v-icon x-small color="#8898aa">fas fa-calendar-alt</v-icon>
+            </div>
+          </div>
+        </div>
+      </template>
+      <template v-slot:item.date_filled="{ item }">
+        <div class="d-flex align-center">
+          <div class="flex-grow-1">
+            <p v-if="item.date_filled" class="caption ma-0">
+              {{$formatDateTime(item.start_date, 'MMM Do YY')}}
+            </p>
+          </div>
+          <div>
+            <div class="fa-user-plus1 ml-2"
+                 @click="$bus.$emit('menu-matter-date', $event, item.date_filled, item, 'date_filled')">
+              <v-icon x-small color="#8898aa">fas fa-calendar-alt</v-icon>
+            </div>
+          </div>
+        </div>
+      </template>
+      <template v-slot:item.est_time="{ item }">
+        <div class="d-flex align-center">
+          <div class="flex-grow-1">
+            <p v-if="item.est_time" class="caption ma-0">
+              {{$formatTimeToDay(item.est_time)}}
+            </p>
+          </div>
+          <div>
+            <div class="fa-user-plus1 ml-2"
+                 @click="$bus.$emit('menu-matter-time', $event, item.date_filled, item, 'est_time')">
+              <v-icon x-small color="#8898aa">far fa-clock</v-icon>
+              <!--              <i class="far fa-clock"></i>-->
+            </div>
+          </div>
+        </div>
+      </template>
+      <template v-slot:item.jury_demand="{ item }">
+        <div class="d-flex align-center">
+          <div class="flex-grow-1">
+            <div @click="$bus.$emit('menu-matter-switch', $event, item.jury_demand, item, 'jury_demand')"">
+              <span v-if="item.jury_demand"
+                    class="badge badge-success cusor--pointer">
+                          Yes
+                        </span>
+              <span v-else
+                    class="badge badge-danger cusor--pointer">
+                          No
+                        </span>
+            </div>
+          </div>
+          <!--<div>
+            <div class="fa-user-plus1 ml-2"
+                 @click="$bus.$emit('menu-matter-switch', $event, item.jury_demand, item, 'jury_demand')">
+              <v-icon x-small color="#8898aa">fas fa-pen</v-icon>
+            </div>
+          </div>-->
+        </div>
+      </template>
 
 
     </v-data-table>
@@ -193,90 +260,84 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
+    import {mapGetters} from 'vuex'
 
-  export default {
-    name: 'listView',
-    data() {
-      return {
-        headers: [
+    export default {
+        name: 'listView',
+        data() {
+            return {
+                headers: [
 
-          {
-            text: '',
-            align: 'left',
-            sortable: false,
-            value: 'drop'
-          },
-          {
-            text: '',
-            align: 'left',
-            sortable: false,
-            value: 'link'
-          },
-          {
-            text: 'Name',
-            align: 'left',
-            sortable: true,
-            value: 'name'
-          },
-          { text: 'Created By ', value: 'creator' },
-          { text: 'Court District', value: 'court' },
-          { text: 'Members', value: 'members' }, // N/A
-          { text: 'Progress', value: 'progress' }, // N/A
-          { text: 'Docket Number', value: 'docket_number' }, // N/A
-          { text: 'Priority', value: 'priority' }, // done
-          { text: 'Lead Attorneys', value: 'lead_attorneys' }, // N/A
-          { text: 'Matter Type ', value: 'types' },
+                    {
+                        text: '',
+                        align: 'left',
+                        sortable: false,
+                        value: 'drop'
+                    },
+                    {
+                        text: '',
+                        align: 'left',
+                        sortable: false,
+                        value: 'link'
+                    },
+                    {
+                        text: 'Name',
+                        align: 'left',
+                        sortable: true,
+                        value: 'name'
+                    },
+                    {text: 'Created By ', value: 'creator'},
+                    {text: 'Court District', value: 'court'},
+                    {text: 'Members', value: 'members'}, // N/A
+                    {text: 'Progress', value: 'progress'}, // N/A
+                    {text: 'Docket Number', value: 'docket_number'}, // N/A
+                    {text: 'Priority', value: 'priority'}, // done
+                    {text: 'Lead Attorneys', value: 'lead_attorneys'}, // N/A
+                    {text: 'Matter Type ', value: 'types'},
 
-          { text: 'Start Date', value: 'start_date' },
-          { text: 'Time Est. ', value: 'est_time' },
-          { text: 'Total Time Logged', value: 'total_time' },
-          { text: 'Total Billable Hours', value: 'total_hours' }, // N/A
-          { text: 'Risk Level', value: 'risk_level' },
-          { text: 'Matter Stage', value: 'matter_stage' },
-          { text: 'Total Expense ', value: 'total_expense' },
-          { text: 'Judge', value: 'judge' }, // N/A
-          { text: 'Date Filed', value: 'date_filled' },
-          { text: 'Jury Demand', value: 'jury_demand' },
-          { text: 'Client', value: 'clients' },
-          { text: 'Active', value: 'active' },
-          { text: 'Next Court Date', value: 'complaints' } // N/A
+                    {text: 'Start Date', value: 'start_date'},
+                    {text: 'Time Est. ', value: 'est_time'},
+                    {text: 'Total Time Logged', value: 'total_time'},
+                    {text: 'Total Billable Hours', value: 'total_hours'}, // N/A
+                    {text: 'Risk Level', value: 'risk_level'},
+                    {text: 'Matter Stage', value: 'matter_stage'},
+                    {text: 'Total Expense ', value: 'total_expense'},
+                    {text: 'Judge', value: 'judge'}, // N/A
+                    {text: 'Date Filed', value: 'date_filled'},
+                    {text: 'Jury Demand', value: 'jury_demand'},
+                    {text: 'Client', value: 'clients'},
+                    {text: 'Active', value: 'active'},
+                    {text: 'Next Court Date', value: 'complaints'} // N/A
 
-        ],
-        list: [],
-        totalDesserts: 0,
-        options: {
-          // itemsPerPage: 20
+                ],
+                list: [],
+                totalDesserts: 0,
+                options: {
+                    // itemsPerPage: 20
+                },
+                next: null
+            }
         },
-        next: null
-      }
-    },
-    computed: {
-      ...mapGetters({
-        matters: 'matters/list',
-        loading: 'matters/pending',
-        findMemberByID: 'workspace/findMemberByID',
-        members: 'workspace/workspaceMembers',
-        findCourtByID: 'courts/findCourtByID'
-      })
+        computed: {
+            ...mapGetters({
+                matters: 'matters/list',
+                loading: 'matters/pending',
+                findMemberByID: 'workspace/findMemberByID',
+                members: 'workspace/workspaceMembers',
+                findCourtByID: 'courts/findCourtByID'
+            })
 
-    },
-    methods: {
-      changeTitle(item, val) {
-        console.log(item, val)
-        this.$store.dispatch('matters/updateMatter', { matterID: item.matterID, data: { name: val } })
-      },
-      changeCourts(matterID, courtID) {
-        this.$store.dispatch('matters/updateMatter', { matterID, data: { jurisdiction: courtID } })
-      }
-    },
-    mounted() {
-      let _self = this
-      this.$bus.$on('change-courts', (court, matter) => {
-        _self.changeCourts(matter.matterID, court.courtID)
-      })
+        },
+        methods: {
+            changeTitle(item, val) {
+                console.log(item, val)
+                this.$store.dispatch('matters/updateMatter', {matterID: item.matterID, data: {name: val}})
+            },
+        },
+        mounted() {
+
+        }
     }
-  }
 </script>
 
 <style scoped lang="scss">
@@ -381,10 +442,19 @@
     font-size: 12px;
 
   }
+
+  .badge-tag {
+    font-size: 8px;
+    margin-right: 5px;
+    text-transform: capitalize;
+    line-height: normal;
+    padding: 3px 10px;
+    border-radius: 10rem;
+  }
 </style>
 <style scoped>
-  @import "https://demos.creative-tim.com/argon-design-system/assets/css/argon.min.css?v=1.0";
-  @import "https://demos.creative-tim.com/argon-design-system/assets/css/docs.min.css?v=1.0.1";
+  /*@import "https://demos.creative-tim.com/argon-design-system/assets/css/argon.min.css?v=1.0";*/
+  /*@import "https://demos.creative-tim.com/argon-design-system/assets/css/docs.min.css?v=1.0.1";*/
 </style>
 <style>
   .icon_dot {

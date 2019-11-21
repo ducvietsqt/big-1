@@ -1,11 +1,11 @@
 <template>
   <v-app>
-    <v-navigation-drawer app>
-      <!-- -->
-    </v-navigation-drawer>
-    <v-app-bar app flat>
-      <!-- -->
-    </v-app-bar>
+    <!--<v-navigation-drawer app width="150">
+      &lt;!&ndash; &ndash;&gt;
+    </v-navigation-drawer>-->
+   <!-- <v-app-bar app flat>
+      &lt;!&ndash; &ndash;&gt;
+    </v-app-bar>-->
     <!-- Sizes your content based upon application components -->
     <v-content>
       <!-- Provides the application the proper gutter -->
@@ -15,6 +15,9 @@
         <menu-priority></menu-priority>
         <menu-member></menu-member>
         <menu-type-list></menu-type-list>
+        <menu-date></menu-date>
+        <menu-time></menu-time>
+        <menu-switch></menu-switch>
         <!-- If using vue-router -->
         <v-menu offset-y :close-on-content-click="false" top right>
           <template v-slot:activator="{ on }">

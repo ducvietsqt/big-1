@@ -54,6 +54,21 @@ Vue.mixin({
           return '---'
         }
       },
+      $formatTimeToDay(numberOfHours) {
+        if (!numberOfHours || typeof numberOfHours !== "number") return 'N/A';
+        const day = 24, m = 60
+        let Days=Math.floor(numberOfHours/day);
+        let Remainder=numberOfHours % day;
+        let Hours=Math.floor(Remainder);
+        let Minutes=Math.floor(m*(Remainder-Hours));
+
+        let str_days = Days > 0 ? Days + 'd ' : '';
+        let str_hours = Hours > 0 ? Hours + 'h ' : '';
+        let str_minutes = Minutes > 0 ? Minutes + 'm ' : '';
+
+         return  str_days + str_hours + str_minutes
+        // return({"Days":Days,"Hours":Hours,"Minutes":Minutes})
+      },
       $isUpcoming(current_date) {
         return moment(current_date).isAfter(moment(new Date()).format('YYYY-MM-DD'))
       },

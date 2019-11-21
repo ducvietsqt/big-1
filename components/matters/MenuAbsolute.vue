@@ -78,7 +78,7 @@
             change(item) {
                 console.log(item)
                 const {temp} = this;
-                this.$bus.$emit("change-courts", item, temp.matter);
+                this.$store.dispatch('matters/updateMatter', { matterID: temp.matter.matterID, data: { jurisdiction: item.courtID } })
             }
         },
     }

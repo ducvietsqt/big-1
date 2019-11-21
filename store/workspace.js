@@ -17,6 +17,7 @@ export const state = () => ({
 });
 
 export const getters  = {
+  pending: state => state.pending,
   workspaceMembers: state => state.members,
   workspaceProjects: state => state.projects,
 

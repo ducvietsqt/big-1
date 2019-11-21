@@ -12,6 +12,9 @@
       <v-container fluid>
         <ListView/>
         <menu-absolute></menu-absolute>
+        <menu-priority></menu-priority>
+        <menu-member></menu-member>
+        <menu-type-list></menu-type-list>
         <!-- If using vue-router -->
         <v-menu offset-y :close-on-content-click="false" top right>
           <template v-slot:activator="{ on }">
@@ -43,9 +46,10 @@
 
 <script>
     import ListView from "../components/matters/listView";
+    import MenuTypeList from '../components/matters/MenuTypeList'
 
     export default {
-        components: {ListView},
+        components: { MenuTypeList, ListView},
         layout: "app",
         head() {
             return {

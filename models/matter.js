@@ -8,7 +8,6 @@ export class Matter {
       this.members = []
       return
     }
-
     this.matterID = c.id
     this.courtID = c.court || 'ca1'
     this.name = c.name || 'N/A'
@@ -36,6 +35,10 @@ export class Matter {
     this.hasMember = !this.emptyProp(this.members);
     this.hasClient = !this.emptyProp(this.clients);
 
+    this.riskLevel = this.levelTitle(this.risk_level)
+    this.priorityLevel = this.levelTitle(this.priority)
+    this.priorityColor = this.levelColor(this.priority)
+    this.riskColor = this.levelColor(this.risk_level)
 
   }
 
@@ -73,8 +76,8 @@ export class Matter {
   }
 
   // single select N/A, very low, low, normal, high, very high
-  riskLevel(riskLevel = true) {
-    switch (riskLevel ? this.risk_level : this.priority) {
+  levelTitle(level) {
+    switch (level) {
       case 1:
         return 'very low';
       case 2:
@@ -87,6 +90,22 @@ export class Matter {
         return 'very high';
       default:
         return 'N/A'
+    }
+  }
+  levelColor(level) {
+    switch (level) {
+      case 1:
+        return '#37474f';
+      case 2:
+        return '#5e72e4';
+      case 3:
+        return '#ffbb33';
+      case 4:
+        return '#ff9f1a';
+      case 5:
+        return '#f5365c';
+      default:
+        return '#000000'
     }
   }
 

@@ -30,14 +30,14 @@ export const getters = {
 
 };
 
-
+const base = "/api/courts/";
 export const actions = {
   // Loads & transforms all channels
   async load({commit}) { // eslint-disable-line
     commit(types.pending)
     return new Promise((resolve) => {
       let courts = [];
-      this.$axios.get("/api/courts/").then(rs => {
+      this.$axios.get(base).then(rs => {
         courts = rs.data
         courts = courts.map(m => new Court(m))
         commit(types.resetList, courts)

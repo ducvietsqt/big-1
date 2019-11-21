@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="card shadow">
     <div>
       <!--      {{matters}}-->
     </div>
@@ -17,6 +17,13 @@
           <i class="fa fa-external-link" aria-hidden="true"></i>
         </router-link>
       </template>
+      <template v-slot:item.drop="{ item }">
+        <div class="handle-wrapper" style="cursor: move;">
+          <v-icon color="#b5b5b5" small style="font-size: 14px;">fa fa-ellipsis-v</v-icon>
+          <v-icon color="#b5b5b5" small style="font-size: 14px; margin: 0px -2px">fa fa-ellipsis-v</v-icon>
+          <v-icon color="#b5b5b5" small style="font-size: 14px;">fa fa-ellipsis-v</v-icon>
+        </div>
+      </template>
       <template v-slot:item.name="{ item }">
         <div style="width: 200px">
           <input-list :value="item.name"
@@ -33,18 +40,34 @@
               {{$_court(item.jurisdiction)['short_name']}}
             </template>
           </div>
-          <div class="fa-user-plus" @click="$bus.$emit('menu-absolute', $event, item.courtID, item)">
-            <v-icon small>mdi-domain</v-icon>
+          <div>
+            <div class="fa-user-plus1" @click="$bus.$emit('menu-absolute', $event, item.courtID, item)">
+              <!--<v-icon small>fas fa-location-arrow</v-icon>-->
+              <!--<i class="fas fa-location-arrow"></i>-->
+              <i class="fas fa-map-marker-alt"></i>
+            </div>
           </div>
         </div>
       </template>
 
       <template v-slot:item.risk_level="{ item }">
-        {{item.riskLevel()}}
+
       </template>
 
       <template v-slot:item.priority="{ item }">
-        {{item.riskLevel()}}
+        <div class="d-flex align-center" style="width: 100px">
+          <div class="flex-grow-1">
+            <div class="d-flex align-center">
+              <span class="badge"
+                    :style="{background: $hexToRgbA(item.priorityColor), color: item.priorityColor}">
+                          {{item.priorityLevel}}
+                        </span>
+            </div>
+          </div>
+          <div class="fa-user-plus1 ml-2" @click="$bus.$emit('menu-priority', $event, item.priority, item)">
+            <v-icon small :color="item.priorityColor">fas fa-angle-double-up</v-icon>
+          </div>
+        </div>
       </template>
 
       <template v-slot:item.status="{ item }">
@@ -66,8 +89,10 @@
               </template>
             </template>
           </div>
-          <div class="fa-user-plus">
-            <v-icon small>mdi-account-plus</v-icon>
+
+          <div class="fa-user-plus1" @click="$bus.$emit('menu-member', $event, item.members, item)">
+            <!--<v-icon>fa fa-user-plus</v-icon>-->
+            <i class="fa fa-user-plus ml-2" aria-hidden="true"></i>
           </div>
 
         </div>
@@ -102,17 +127,64 @@
       <template v-slot:item.progress="{ item }">
         <div class="d-flex align-center">
           <div class="flex-grow-1">
-            <v-progress-linear color="blue-grey"
-                               height="25"
+            <v-progress-linear color="#5e72e4"
+                               height="15"
                                :value="25"
                                reactive>
               <template v-slot="{ value }">
-                <strong>{{ Math.ceil(value) }}%</strong>
+                <strong style="font-size: 75%">{{ Math.ceil(value) }}%</strong>
               </template>
             </v-progress-linear>
           </div>
         </div>
       </template>
+      <template v-slot:item.active="{ item }">
+        <div class="d-flex align-center">
+          <div class="flex-grow-1">
+            <span v-if="item.activate" class="badge badge-success">
+                          active
+                        </span>
+            <span v-else class="badge badge-warning">
+                          inactive
+                        </span>
+
+          </div>
+        </div>
+      </template>
+      <template v-slot:item.clients="{ item }">
+        <div class="d-flex align-center">
+          <div class="flex-grow-1">
+            <span v-if="item.activate" class="badge badge-success">
+                          active
+                        </span>
+            <span v-else class="badge badge-warning">
+                          inactive
+                        </span>
+
+          </div>
+        </div>
+      </template>
+      <template v-slot:item.types="{ item }">
+        <div class="d-flex align-center" style="width: 200px;">
+          <div class="flex-grow-1" style="max-width: 100%">
+            <div style="white-space: normal" class="py-2">
+              <span class="badge badge-pill badge-info text-capitalize" style="padding: 5px 10px; margin: 2px 2px"
+                    :style="{background: '#'+tag.color, color:'#fff'}"
+                    v-for="(tag) in item.types"
+                    :key="'tag-column-'+tag.pk">
+                          {{tag.name}}
+                        </span>
+            </div>
+          </div>
+          <div>
+            <div class="fa-user-plus1 ml-2" @click="$bus.$emit('menu-types', $event, item.types, item)">
+              <i class="fa fa-tag" aria-hidden="true"></i>
+            </div>
+          </div>
+        </div>
+      </template>
+
+
     </v-data-table>
 
 
@@ -120,85 +192,94 @@
 </template>
 
 <script>
-    import {mapGetters} from 'vuex'
+  import { mapGetters } from 'vuex'
 
-    export default {
-        name: "listView",
-        data() {
-            return {
-                headers: [
-                    {
-                        text: '',
-                        align: 'left',
-                        sortable: false,
-                        value: 'link',
-                    },
-                    {
-                        text: 'Name',
-                        align: 'left',
-                        sortable: true,
-                        value: 'name',
-                    },
-                    {text: 'Court District', value: 'court'},
-                    {text: 'Docket Number', value: 'clients'}, // N/A
-                    {text: 'Priority', value: 'priority'}, // done
-                    {text: 'Lead Attorneys', value: 'clients'}, // N/A
-                    {text: 'Matter Type ', value: 'types'},
-                    {text: 'Created By ', value: 'creator'},
-                    {text: 'Start Date', value: 'start_date'},
-                    {text: 'Time Est. ', value: 'est_time'},
-                    {text: 'Total Time Logged', value: 'clients'},
-                    {text: 'Total Billable Hours', value: 'clients'}, // N/A
-                    {text: 'Risk Level', value: 'risk_level'},
-                    {text: 'Matter Stage', value: 'clients'},
-                    {text: 'Total Expense ', value: 'clients'},
-                    {text: 'Judge', value: 'clients'}, // N/A
-                    {text: 'Date Filed', value: 'date_filled'},
-                    {text: 'Jury Demand', value: 'jury_demand'},
-                    {text: 'Client', value: 'clients'},
-                    {text: 'Active', value: 'active'},
-                    {text: 'Next Court Date', value: 'complaints'}, // N/A
-                    {text: 'Members', value: 'members'}, // N/A
-                    {text: 'Progress', value: 'progress'}, // N/A
-                ],
-                list: [],
-                totalDesserts: 0,
-                options: {
-                    // itemsPerPage: 20
-                },
-                next: null
-            }
-        },
-        computed: {
-            ...mapGetters({
-                matters: "matters/list",
-                loading: "matters/pending",
-                findMemberByID: "workspace/findMemberByID",
-                members: "workspace/workspaceMembers",
-                findCourtByID: "courts/findCourtByID",
-            }),
+  export default {
+    name: 'listView',
+    data() {
+      return {
+        headers: [
 
+          {
+            text: '',
+            align: 'left',
+            sortable: false,
+            value: 'drop'
+          },
+          {
+            text: '',
+            align: 'left',
+            sortable: false,
+            value: 'link'
+          },
+          {
+            text: 'Name',
+            align: 'left',
+            sortable: true,
+            value: 'name'
+          },
+          { text: 'Created By ', value: 'creator' },
+          { text: 'Court District', value: 'court' },
+          { text: 'Members', value: 'members' }, // N/A
+          { text: 'Progress', value: 'progress' }, // N/A
+          { text: 'Docket Number', value: 'docket_number' }, // N/A
+          { text: 'Priority', value: 'priority' }, // done
+          { text: 'Lead Attorneys', value: 'lead_attorneys' }, // N/A
+          { text: 'Matter Type ', value: 'types' },
+
+          { text: 'Start Date', value: 'start_date' },
+          { text: 'Time Est. ', value: 'est_time' },
+          { text: 'Total Time Logged', value: 'total_time' },
+          { text: 'Total Billable Hours', value: 'total_hours' }, // N/A
+          { text: 'Risk Level', value: 'risk_level' },
+          { text: 'Matter Stage', value: 'matter_stage' },
+          { text: 'Total Expense ', value: 'total_expense' },
+          { text: 'Judge', value: 'judge' }, // N/A
+          { text: 'Date Filed', value: 'date_filled' },
+          { text: 'Jury Demand', value: 'jury_demand' },
+          { text: 'Client', value: 'clients' },
+          { text: 'Active', value: 'active' },
+          { text: 'Next Court Date', value: 'complaints' } // N/A
+
+        ],
+        list: [],
+        totalDesserts: 0,
+        options: {
+          // itemsPerPage: 20
         },
-        methods: {
-            changeTitle(item, val) {
-                console.log(item, val)
-                this.$store.dispatch("matters/updateMatter", {matterID: item.matterID, data: {name: val}})
-            },
-            changeCourts(matterID, courtID) {
-                this.$store.dispatch("matters/updateMatter", {matterID, data: {jurisdiction: courtID}})
-            }
-        },
-        mounted() {
-            let _self = this;
-            this.$bus.$on("change-courts", (court, matter) => {
-                _self.changeCourts(matter.matterID, court.courtID)
-            })
-        }
+        next: null
+      }
+    },
+    computed: {
+      ...mapGetters({
+        matters: 'matters/list',
+        loading: 'matters/pending',
+        findMemberByID: 'workspace/findMemberByID',
+        members: 'workspace/workspaceMembers',
+        findCourtByID: 'courts/findCourtByID'
+      })
+
+    },
+    methods: {
+      changeTitle(item, val) {
+        console.log(item, val)
+        this.$store.dispatch('matters/updateMatter', { matterID: item.matterID, data: { name: val } })
+      },
+      changeCourts(matterID, courtID) {
+        this.$store.dispatch('matters/updateMatter', { matterID, data: { jurisdiction: courtID } })
+      }
+    },
+    mounted() {
+      let _self = this
+      this.$bus.$on('change-courts', (court, matter) => {
+        _self.changeCourts(matter.matterID, court.courtID)
+      })
     }
+  }
 </script>
 
 <style scoped lang="scss">
-  .fa-user-plus, .fa-map-marker, .fa-cell-icon {
+  .fa-user-plus1, .fa-map-marker, .fa-cell-icon {
     color: #7a797e;
     width: 30px;
     height: 30px;
@@ -220,6 +301,13 @@
   }
 </style>
 <style scoped>
+  .table_list_custom /deep/ .v-data-table-header th {
+    box-shadow: none !important;
+    font-size: 14px !important;
+    text-transform: none !important;
+    font-weight: 600 !important;
+  }
+
   .table_list_custom /deep/ .v-data-table-header {
     border-color: transparent !important;
 
@@ -235,11 +323,13 @@
   }
 
   .table_list_custom /deep/ tbody tr:nth-child(even) {
-    background: #f4f5f7
+    background-color: hsla(0, 0%, 100%, .1);
+
   }
 
   .table_list_custom /deep/ tbody tr:nth-child(odd) {
-    background-color: rgba(255, 255, 255, .1);
+    /*background-color: rgba(255, 255, 255, .1);*/
+    background: #f4f5f7
   }
 
   /*#f4f5f7*/
@@ -289,5 +379,19 @@
   .cell-date {
     font-size: 12px;
 
+  }
+</style>
+<style scoped>
+  @import "https://demos.creative-tim.com/argon-design-system/assets/css/argon.min.css?v=1.0";
+  @import "https://demos.creative-tim.com/argon-design-system/assets/css/docs.min.css?v=1.0.1";
+</style>
+<style>
+  .icon_dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 100%;
+    overflow: hidden;
+    font-size: 0px;
+    display: block;
   }
 </style>

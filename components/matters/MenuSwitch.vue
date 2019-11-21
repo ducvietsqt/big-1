@@ -61,7 +61,7 @@
         watch: {
             showMenu(n) {
                 if(n === false) {
-                    this.switch1 = false
+                    // this.switch1 = false
                 }
             }
         }

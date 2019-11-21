@@ -38,7 +38,7 @@ export const actions = {
     return new Promise((resolve) => {
       let list = [];
       this.$axios.get(base).then(rs => {
-        list = rs.data
+        list = rs.data['results']
         list = list.map(i => new Client(i))
         commit(types.resetList, list)
         resolve(list)

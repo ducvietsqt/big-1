@@ -17,7 +17,8 @@
       showMenu: false,
       x: 0,
       y: 0,
-      temp: {}
+      temp: {},
+      title: ''
     }),
     methods: {
       show (e) {
@@ -31,8 +32,11 @@
       },
       change(item) {
         const {temp} = this;
+        let data = {
+          [temp['k']]: item.id
+        }
         try {
-          this.$store.dispatch("matters/updateMatter", {matterID: temp.matter.matterID, data: {priority: item.id}})
+          this.$store.dispatch("matters/updateMatter", {matterID: temp.item.matterID, data})
         }catch (e) {
           this.$emit("update", item)
         }
@@ -40,8 +44,9 @@
     },
     mounted() {
       let _self = this;
-      this.$bus.$on("menu-priority", (e, priority, matter) => {
-        _self.temp = {priority, matter}
+      this.$bus.$on("menu-priority", ({e, val, item, k, title}) => {
+        _self.temp = {val, item, k}
+        _self.title = title
         _self.show(e)
       })
     }

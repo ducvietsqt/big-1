@@ -52,7 +52,19 @@
       </template>
 
       <template v-slot:item.risk_level="{ item }">
-
+        <div>
+          <div class="d-flex align-center" style="width: 100px">
+            <div class="flex-grow-1">
+            <span class="badge d-block"
+                  :style="{background: $hexToRgbA(item.riskColor), color: item.riskColor}">
+                          {{item.riskLevel}}
+                        </span>
+            </div>
+            <div class="fa-user-plus1 ml-2" @click="$bus.$emit('menu-priority', {e: $event, val: item.risk_level, item, k: 'risk_level'})">
+              <v-icon small :color="item.riskColor">fas fa-angle-double-up</v-icon>
+            </div>
+          </div>
+        </div>
       </template>
 
       <template v-slot:item.priority="{ item }">
@@ -63,7 +75,7 @@
                           {{item.priorityLevel}}
                         </span>
           </div>
-          <div class="fa-user-plus1 ml-2" @click="$bus.$emit('menu-priority', $event, item.priority, item)">
+          <div class="fa-user-plus1 ml-2" @click="$bus.$emit('menu-priority', {e: $event, val: item.priority, item, k: 'priority'})">
             <v-icon small :color="item.priorityColor">fas fa-angle-double-up</v-icon>
           </div>
         </div>
@@ -140,26 +152,17 @@
       <template v-slot:item.active="{ item }">
         <div class="d-flex align-center">
           <div class="flex-grow-1">
-            <span v-if="item.activate" class="badge badge-success">
-                          active
-                        </span>
-            <span v-else class="badge badge-warning">
-                          inactive
-                        </span>
-
+            <div class="cusor--pointer" @click="$bus.$emit('menu-matter-switch', $event, item.activate, item, 'activate', 'Active matter')">
+              <span v-if="item.activate" class="badge badge-success"> active </span>
+              <span v-else class="badge badge-warning"> inactive</span>
+            </div>
           </div>
         </div>
       </template>
       <template v-slot:item.clients="{ item }">
         <div class="d-flex align-center">
           <div class="flex-grow-1">
-            <span v-if="item.activate" class="badge badge-success">
-                          active
-                        </span>
-            <span v-else class="badge badge-warning">
-                          inactive
-                        </span>
-
+            {{item.clients}}
           </div>
         </div>
       </template>
@@ -232,7 +235,7 @@
       <template v-slot:item.jury_demand="{ item }">
         <div class="d-flex align-center">
           <div class="flex-grow-1">
-            <div @click="$bus.$emit('menu-matter-switch', $event, item.jury_demand, item, 'jury_demand')"">
+            <div @click="$bus.$emit('menu-matter-switch', $event, item.jury_demand, item, 'jury_demand')">
               <span v-if="item.jury_demand"
                     class="badge badge-success cusor--pointer">
                           Yes
@@ -243,101 +246,91 @@
                         </span>
             </div>
           </div>
-          <!--<div>
-            <div class="fa-user-plus1 ml-2"
-                 @click="$bus.$emit('menu-matter-switch', $event, item.jury_demand, item, 'jury_demand')">
-              <v-icon x-small color="#8898aa">fas fa-pen</v-icon>
-            </div>
-          </div>-->
         </div>
       </template>
-
-
     </v-data-table>
-
-
   </div>
 </template>
 
 <script>
-    import {mapGetters} from 'vuex'
+  import { mapGetters } from 'vuex'
 
-    export default {
-        name: 'listView',
-        data() {
-            return {
-                headers: [
+  export default {
+    name: 'listView',
+    data() {
+      return {
+        headers: [
 
-                    {
-                        text: '',
-                        align: 'left',
-                        sortable: false,
-                        value: 'drop'
-                    },
-                    {
-                        text: '',
-                        align: 'left',
-                        sortable: false,
-                        value: 'link'
-                    },
-                    {
-                        text: 'Name',
-                        align: 'left',
-                        sortable: true,
-                        value: 'name'
-                    },
-                    {text: 'Created By ', value: 'creator'},
-                    {text: 'Court District', value: 'court'},
-                    {text: 'Members', value: 'members'}, // N/A
-                    {text: 'Progress', value: 'progress'}, // N/A
-                    {text: 'Docket Number', value: 'docket_number'}, // N/A
-                    {text: 'Priority', value: 'priority'}, // done
-                    {text: 'Lead Attorneys', value: 'lead_attorneys'}, // N/A
-                    {text: 'Matter Type ', value: 'types'},
+          {
+            text: '',
+            align: 'left',
+            sortable: false,
+            value: 'drop'
+          },
+          {
+            text: '',
+            align: 'left',
+            sortable: false,
+            value: 'link'
+          },
+          {
+            text: 'Name',
+            align: 'left',
+            sortable: true,
+            value: 'name'
+          },
+          { text: 'Created By ', value: 'creator' },
+          { text: 'Court District', value: 'court' },
+          { text: 'Members', value: 'members' }, // N/A
+          { text: 'Progress', value: 'progress' }, // N/A
+          { text: 'Docket Number', value: 'docket_number' }, // N/A
+          { text: 'Priority', value: 'priority' }, // done
+          { text: 'Lead Attorneys', value: 'lead_attorneys' }, // N/A
+          { text: 'Matter Type ', value: 'types' },
 
-                    {text: 'Start Date', value: 'start_date'},
-                    {text: 'Time Est. ', value: 'est_time'},
-                    {text: 'Total Time Logged', value: 'total_time'},
-                    {text: 'Total Billable Hours', value: 'total_hours'}, // N/A
-                    {text: 'Risk Level', value: 'risk_level'},
-                    {text: 'Matter Stage', value: 'matter_stage'},
-                    {text: 'Total Expense ', value: 'total_expense'},
-                    {text: 'Judge', value: 'judge'}, // N/A
-                    {text: 'Date Filed', value: 'date_filled'},
-                    {text: 'Jury Demand', value: 'jury_demand'},
-                    {text: 'Client', value: 'clients'},
-                    {text: 'Active', value: 'active'},
-                    {text: 'Next Court Date', value: 'complaints'} // N/A
+          { text: 'Start Date', value: 'start_date' },
+          { text: 'Time Est. ', value: 'est_time' },
+          { text: 'Total Time Logged', value: 'total_time' },
+          { text: 'Total Billable Hours', value: 'total_hours' }, // N/A
+          { text: 'Risk Level', value: 'risk_level' },
+          { text: 'Matter Stage', value: 'matter_stage' },
+          { text: 'Total Expense ', value: 'total_expense' },
+          { text: 'Judge', value: 'judge' }, // N/A
+          { text: 'Date Filed', value: 'date_filled' },
+          { text: 'Jury Demand', value: 'jury_demand' },
+          { text: 'Client', value: 'clients' },
+          { text: 'Active', value: 'active' },
+          { text: 'Next Court Date', value: 'complaints' } // N/A
 
-                ],
-                list: [],
-                totalDesserts: 0,
-                options: {
-                    // itemsPerPage: 20
-                },
-                next: null
-            }
+        ],
+        list: [],
+        totalDesserts: 0,
+        options: {
+          // itemsPerPage: 20
         },
-        computed: {
-            ...mapGetters({
-                matters: 'matters/list',
-                loading: 'matters/pending',
-                findMemberByID: 'workspace/findMemberByID',
-                members: 'workspace/workspaceMembers',
-                findCourtByID: 'courts/findCourtByID'
-            })
+        next: null
+      }
+    },
+    computed: {
+      ...mapGetters({
+        matters: 'matters/list',
+        loading: 'matters/pending',
+        findMemberByID: 'workspace/findMemberByID',
+        members: 'workspace/workspaceMembers',
+        findCourtByID: 'courts/findCourtByID'
+      })
 
-        },
-        methods: {
-            changeTitle(item, val) {
-                console.log(item, val)
-                this.$store.dispatch('matters/updateMatter', {matterID: item.matterID, data: {name: val}})
-            },
-        },
-        mounted() {
+    },
+    methods: {
+      changeTitle(item, val) {
+        console.log(item, val)
+        this.$store.dispatch('matters/updateMatter', { matterID: item.matterID, data: { name: val } })
+      }
+    },
+    mounted() {
 
-        }
     }
+  }
 </script>
 
 <style scoped lang="scss">

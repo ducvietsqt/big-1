@@ -28,6 +28,7 @@ export const actions = {
       commit('authToken', {token})
       this.$axios.setToken("JWT " + token);
       let rs = await this.$axios.get("/api/users/me")
+       await this.$axios.get("/api/app-configs/")
       commit('authSuccess', {user: rs.data, token})
       // console.log('USER', user.data)
       return rs

@@ -1,3 +1,5 @@
+import { Client } from './client'
+
 export class Matter {
   constructor(c) {
     this.canUpdate = true
@@ -8,7 +10,7 @@ export class Matter {
     this.matterID = c.id
     this.courtID = c.court || 'ca1'
     this.name = c.name || 'N/A'
-    this.clients = c.clients || []
+    this.clients = c.clients.map(c => new Client(c)) || []
     this.intro = c.intro
     this.jurisdiction = c.jurisdiction
     this.claims = c.claims
@@ -72,7 +74,7 @@ export class Matter {
     return !this.deletedAt && !this.archivedAt
   }
   // format date
-  
+
   // single select N/A, very low, low, normal, high, very high
   levelTitle(level) {
     switch (level) {

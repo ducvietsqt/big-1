@@ -1,4 +1,3 @@
-
 export class Client {
   constructor(c) {
     if (!c) {
@@ -19,68 +18,77 @@ export class Client {
     this.addresses = c.addresses || []
     this.managers = c.managers || []
 
+    this.name = this.getName() || 'N/A'
   }
+
+  getName() {
+    return this.first_name + ' ' + this.last_name
+  }
+
   addAddresses() {
 
   }
+
   addWebsites() {
 
   }
+
   addManagers() {
 
   }
+
   addPhones() {
 
   }
 
 
-
 }
+
 let a = {
-  "pk": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-  "avatar": "string",
-  "first_name": "string",
-  "last_name": "string",
-  "middle_name": "string",
-  "client_type": "i",
-  "company_name": "string",
-  "workspace": "string",
-  "enable_portal": true,
-  "emails": [
+  'pk': '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+  'avatar': 'string',
+  'first_name': 'string',
+  'last_name': 'string',
+  'middle_name': 'string',
+  'client_type': 'i',
+  'company_name': 'string',
+  'workspace': 'string',
+  'enable_portal': true,
+  'emails': [
     {
-      "email": "user@example.com",
-      "email_type": "h",
-      "primary": false
+      'email': 'user@example.com',
+      'email_type': 'h',
+      'primary': false
     }
   ],
-  "phones": [
+  'phones': [
     {
-      "phone_number": "string",
-      "phone_type": "h",
-      "primary": false
+      'phone_number': 'string',
+      'phone_type': 'h',
+      'primary': false
     }
   ],
-  "websites": [
+  'websites': [
     {
-      "website": "string",
-      "website_type": "w",
-      "primary": false
+      'website': 'string',
+      'website_type': 'w',
+      'primary': false
     }
   ],
-  "addresses": [
+  'addresses': [
     {
-      "country": "AF",
-      "street": "string",
-      "city": "string",
-      "state": "string",
-      "postal_code": "string",
-      "address_type": "w"
+      'country': 'AF',
+      'street': 'string',
+      'city': 'string',
+      'state': 'string',
+      'postal_code': 'string',
+      'address_type': 'w'
     }
   ],
-  "managers": [
+  'managers': [
     {
-      "billing_rate": "string",
-      "user": 0
+      'billing_rate': 'string',
+      'user': 0
     }
   ]
 }

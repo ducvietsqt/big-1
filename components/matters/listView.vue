@@ -152,7 +152,7 @@
       <template v-slot:item.active="{ item }">
         <div class="d-flex align-center">
           <div class="flex-grow-1">
-            <div class="cusor--pointer" @click="$bus.$emit('menu-matter-switch', $event, item.activate, item, 'activate', 'Active matter')">
+            <div class="cusor--pointer d-inline-block" @click="$bus.$emit('menu-matter-switch', $event, item.activate, item, 'activate', 'Active matter')">
               <span v-if="item.activate" class="badge badge-success"> active </span>
               <span v-else class="badge badge-warning"> inactive</span>
             </div>
@@ -160,9 +160,19 @@
         </div>
       </template>
       <template v-slot:item.clients="{ item }">
-        <div class="d-flex align-center">
+        <div class="d-flex align-center" style="width: 150px;">
           <div class="flex-grow-1">
-            {{item.clients}}
+            <div style="white-space: normal" v-if="item.hasClient">
+              <v-chip :style="{background: $hexToRgbA(item.riskColor), color: item.riskColor}"
+                      class="ma-1" label v-for="i in item.clients" :key="'lv-cl-'+i.clientID">
+                {{i.name}}
+              </v-chip>
+            </div>
+          </div>
+          <div>
+            <div class="fa-user-plus1 ml-2" @click="$bus.$emit('menu-clients', {e: $event, val: item.clients, item, k: 'clients'})">
+              <i class="fas fa-user-plus"></i>
+            </div>
           </div>
         </div>
       </template>

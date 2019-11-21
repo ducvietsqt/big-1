@@ -55,9 +55,11 @@ export const actions = {
         let client = new Client(rs.data)
         commit(types.updateList, client)
         resolve(client)
+      }).catch(() => {
+        resolve(false)
       }).finally(() => {
         commit(types.completed)
-        resolve('done')
+
       })
     })
   },

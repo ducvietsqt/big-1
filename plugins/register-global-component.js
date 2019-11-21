@@ -12,8 +12,13 @@ import MemberList from '../components/matters/MemberList'
 import MenuTypeList from '../components/matters/MenuTypeList'
 import TypeList from '../components/matters/TypeList'
 import MenuDate from '../components/matters/MenuDate'
+
 import MenuTime from '../components/matters/MenuTime'
+
 import MenuSwitch from '../components/matters/MenuSwitch'
+
+import ClientList from '../components/matters/ClientList'
+import MenuClients from '../components/matters/MenuClients'
 
 
 
@@ -38,5 +43,8 @@ Vue.component('type-list', TypeList)
 Vue.component('menu-date', MenuDate)
 Vue.component('menu-time', MenuTime)
 Vue.component('menu-switch', MenuSwitch)
+
+Vue.component('menu-clients', MenuClients)
+Vue.component('client-list', ClientList)
 
 

@@ -19,3 +19,16 @@
 .lb_gr .v-label{
   margin-bottom: 0px;
 }
+
+.fill-scroll {
+
+}
+
+.v-application {
+}
+.table_list_custom.v-data-table--fixed-header .v-data-table__wrapper {
+  overflow: unset;
+}
+::-webkit-scrollbar {
+  display: none;
+}

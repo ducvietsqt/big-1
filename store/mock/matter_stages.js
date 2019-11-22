@@ -1,4 +1,4 @@
-let stages = [
+export let stages = [
   {title: 'N/A', color: '#37474f', id: 1, icon_num: 1},
   {title: 'New', color: '#5e72e4', id: 2, icon_num: 1},
   {title: 'Preparation', color: '#ffbb33', id: 3, icon_num: 1},

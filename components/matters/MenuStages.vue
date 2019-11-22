@@ -36,7 +36,7 @@
       change(item) {
         const {temp} = this;
         let data = {
-          [temp['k']]: item.id
+          [temp['k']]: item
         }
         try {
           this.$store.dispatch("matters/updateMatter", {matterID: temp.item.matterID, data})

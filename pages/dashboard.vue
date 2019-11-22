@@ -1,15 +1,17 @@
 <template>
-  <v-app>
-    <!--<v-navigation-drawer app width="150">
-      &lt;!&ndash; &ndash;&gt;
-    </v-navigation-drawer>-->
-   <!-- <v-app-bar app flat>
-      &lt;!&ndash; &ndash;&gt;
-    </v-app-bar>-->
+  <div>
+    <v-navigation-drawer app width="150">
+      <!-- -->
+    </v-navigation-drawer>
+    <v-app-bar app flat>
+      <!-- -->
+    </v-app-bar>
     <!-- Sizes your content based upon application components -->
     <v-content>
+      <!--      <div class="fill-scroll">-->
       <!-- Provides the application the proper gutter -->
-      <v-container fluid>
+      <!--      <v-container fluid>-->
+      <v-flex xs12 style="overflow:auto; height: calc(100vh - 64px)">
         <ListView/>
         <menu-absolute></menu-absolute>
         <menu-priority></menu-priority>
@@ -40,47 +42,43 @@
             </v-card-text>
           </v-card>
         </v-menu>
-      </v-container>
+      </v-flex>
+      <!--      </v-container>-->
+      <!--      </div>-->
     </v-content>
-
-    <v-footer app>
-      <!-- -->
-    </v-footer>
-  </v-app>
+  </div>
 </template>
 
 <script>
-    import ListView from "../components/matters/listView";
-    import MenuTypeList from '../components/matters/MenuTypeList'
+import ListView from "../components/matters/listView";
+import MenuTypeList from '../components/matters/MenuTypeList'
 
-    export default {
-        components: { MenuTypeList, ListView},
-        layout: "app",
-        head() {
-            return {
-                title: 'Welcome to Satlegal',
-                meta: [
-                    // hid is used as unique identifier. Do not use `vmid` for it as it will not work
-                    {hid: 'description', name: 'description', content: 'My custom description'}
-                ]
-            }
-        },
-        async asyncData(context) {
+export default {
+    components: {MenuTypeList, ListView},
+    layout: "app",
+    head() {
+        return {
+            title: 'Welcome to Satlegal',
+            meta: [
+                // hid is used as unique identifier. Do not use `vmid` for it as it will not work
+                {hid: 'description', name: 'description', content: 'My custom description'}
+            ]
+        }
+    },
+    async asyncData(context) {
 
-        },
-        data() {
-            return {
-                name: ''
-            }
-        },
-        async mounted() {
-            await this.$store.dispatch('matters/load')
-        },
-        computed: {
+    },
+    data() {
+        return {
+            name: ''
+        }
+    },
+    async mounted() {
+        await this.$store.dispatch('matters/load')
+    },
+    computed: {},
 
-        },
-
-    }
+}
 </script>
 
 <style scoped>

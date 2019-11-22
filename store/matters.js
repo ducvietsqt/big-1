@@ -1,4 +1,5 @@
 import {Matter} from '../models/matter'
+import {stages} from "~/store/mock/matter_stages";
 
 const types = {
   pending: 'pending',
@@ -79,6 +80,10 @@ export const actions = {
     commit(types.pending)
     return new Promise((resolve) => {
       this.$axios.patch("/api/matters/"+matterID+"/", data).then(rs => {
+        console.log('CC', data, rs.data)
+        if(data['matter_stage']) {
+          rs.data['matter_stage'] = stages.find(s => s.id === data['matter_stage'] )
+        }
         let matter = new Matter(rs.data);
         commit(types.updateList, matter)
       }).finally(() => {

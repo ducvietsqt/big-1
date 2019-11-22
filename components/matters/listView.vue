@@ -1,202 +1,196 @@
 <template>
-  <div class="card shadow">
-    <div>
-      <!--      {{matters}}-->
-    </div>
-    <div>
-      <!--            {{courts}}-->
-    </div>
-    <v-data-table :headers="headers" fixed-header
-                  :items="matters"
-                  hide-default-footer
-                  :loading="loading"
-                  class="elevation-1 table_list_custom"
-                  :calculate-widths="true">
-      <template v-slot:item.link="{ item }">
-        <router-link to="#" :title="item.name">
-          <i class="fa fa-external-link" aria-hidden="true"></i>
-        </router-link>
-      </template>
-      <template v-slot:item.drop="{ item }">
-        <div class="handle-wrapper" style="cursor: move;">
-          <v-icon color="#b5b5b5" small style="font-size: 14px;">fa fa-ellipsis-v</v-icon>
-          <v-icon color="#b5b5b5" small style="font-size: 14px; margin: 0px -2px">fa fa-ellipsis-v</v-icon>
-          <v-icon color="#b5b5b5" small style="font-size: 14px;">fa fa-ellipsis-v</v-icon>
-        </div>
-      </template>
-      <template v-slot:item.name="{ item }">
-        <div style="width: 200px">
-          <input-list :value="item.name"
-                      :disabled="false"
-                      :autofocus="item.focus"
-                      @change="(val) => changeTitle(item, val)"/>
-        </div>
-      </template>
+  <v-data-table :headers="headers"
+                fixed-header
+                :items="matters"
+                hide-default-footer
+                :loading="loading"
+                class="elevation-1 table_list_custom"
+                :calculate-widths="true">
+    <template v-slot:item.link="{ item }">
+      <router-link to="#" :title="item.name">
+        <i class="fa fa-external-link" aria-hidden="true"></i>
+      </router-link>
+    </template>
+    <template v-slot:item.drop="{ item }">
+      <div class="handle-wrapper" style="cursor: move;">
+        <v-icon color="#b5b5b5" small style="font-size: 14px;">fa fa-ellipsis-v</v-icon>
+        <v-icon color="#b5b5b5" small style="font-size: 14px; margin: 0px -2px">fa fa-ellipsis-v</v-icon>
+        <v-icon color="#b5b5b5" small style="font-size: 14px;">fa fa-ellipsis-v</v-icon>
+      </div>
+    </template>
+    <template v-slot:item.name="{ item }">
+      <div style="width: 200px">
+        <input-list :value="item.name"
+                    :disabled="false"
+                    :autofocus="item.focus"
+                    @change="(val) => changeTitle(item, val)"/>
+      </div>
+    </template>
 
-      <template v-slot:item.court="{ item }">
-        <div class="d-flex align-center" style="width: 200px">
-          <div class="flex-grow-1">
-            <template v-if="item.jurisdiction">
-              <!--              {{$_court(item.jurisdiction)['short_name']}}-->
-              {{item.jurisdiction['short_name']}}
-            </template>
-          </div>
-          <div>
-            <div class="fa-user-plus1" @click="$bus.$emit('menu-absolute', $event, item.courtID, item)">
-              <!--<v-icon small>fas fa-location-arrow</v-icon>-->
-              <!--<i class="fas fa-location-arrow"></i>-->
-              <i class="fas fa-map-marker-alt"></i>
-            </div>
-          </div>
+    <template v-slot:item.court="{ item }">
+      <div class="d-flex align-center" style="width: 200px">
+        <div class="flex-grow-1">
+          <template v-if="item.jurisdiction">
+            <!--              {{$_court(item.jurisdiction)['short_name']}}-->
+            {{item.jurisdiction['short_name']}}
+          </template>
         </div>
-      </template>
-
-      <template v-slot:item.risk_level="{ item }">
         <div>
-          <div class="d-flex align-center" style="width: 100px">
-            <div class="flex-grow-1">
+          <div class="fa-user-plus1" @click="$bus.$emit('menu-absolute', $event, item.courtID, item)">
+            <!--<v-icon small>fas fa-location-arrow</v-icon>-->
+            <!--<i class="fas fa-location-arrow"></i>-->
+            <i class="fas fa-map-marker-alt"></i>
+          </div>
+        </div>
+      </div>
+    </template>
+
+    <template v-slot:item.risk_level="{ item }">
+      <div>
+        <div class="d-flex align-center" style="width: 100px">
+          <div class="flex-grow-1">
             <span class="badge d-block"
                   :style="{background: $hexToRgbA(item.riskColor), color: item.riskColor}">
                           {{item.riskLevel}}
                         </span>
-            </div>
-            <div class="fa-user-plus1 ml-2" @click="$bus.$emit('menu-priority', {e: $event, val: item.risk_level, item, k: 'risk_level'})">
-              <v-icon small :color="item.riskColor">fas fa-angle-double-up</v-icon>
-            </div>
+          </div>
+          <div class="fa-user-plus1 ml-2" @click="$bus.$emit('menu-priority', {e: $event, val: item.risk_level, item, k: 'risk_level'})">
+            <v-icon small :color="item.riskColor">fas fa-angle-double-up</v-icon>
           </div>
         </div>
-      </template>
+      </div>
+    </template>
 
-      <template v-slot:item.priority="{ item }">
-        <div class="d-flex align-center" style="width: 100px">
-          <div class="flex-grow-1">
+    <template v-slot:item.priority="{ item }">
+      <div class="d-flex align-center" style="width: 100px">
+        <div class="flex-grow-1">
             <span class="badge d-block"
                   :style="{background: $hexToRgbA(item.priorityColor), color: item.priorityColor}">
                           {{item.priorityLevel}}
                         </span>
-          </div>
-          <div class="fa-user-plus1 ml-2" @click="$bus.$emit('menu-priority', {e: $event, val: item.priority, item, k: 'priority'})">
-            <v-icon small :color="item.priorityColor">fas fa-angle-double-up</v-icon>
-          </div>
         </div>
-      </template>
-      <template v-slot:item.matter_stage="{ item }">
-        <div class="d-flex align-center" style="width: 120x">
-          <div class="flex-grow-1">
+        <div class="fa-user-plus1 ml-2" @click="$bus.$emit('menu-priority', {e: $event, val: item.priority, item, k: 'priority'})">
+          <v-icon small :color="item.priorityColor">fas fa-angle-double-up</v-icon>
+        </div>
+      </div>
+    </template>
+    <template v-slot:item.matter_stage="{ item }">
+      <div class="d-flex align-center" style="width: 120x">
+        <div class="flex-grow-1">
             <span class="badge d-block cusor--pointer"
                   @click="$bus.$emit('menu-stages', {e: $event, val: item.matter_stage, item, k: 'matter_stage', title: 'Matter stage'})"
                   :style="{background: $hexToRgbA(item.matter_stage.color), color: item.matter_stage.color}">
                           {{item.matter_stage.name}}
                         </span>
-          </div>
-         <!-- <div class="fa-user-plus1 ml-2" @click="$bus.$emit('menu-stages', {e: $event, val: item.matter_stage, item, k: 'matter_stage', title: 'Matter stage'})">
-            <v-icon small :color="item.matter_stage.color">fas fa-tasks</v-icon>
-          </div>-->
         </div>
-      </template>
+        <!-- <div class="fa-user-plus1 ml-2" @click="$bus.$emit('menu-stages', {e: $event, val: item.matter_stage, item, k: 'matter_stage', title: 'Matter stage'})">
+           <v-icon small :color="item.matter_stage.color">fas fa-tasks</v-icon>
+         </div>-->
+      </div>
+    </template>
 
 
-      <template v-slot:item.status="{ item }">
+    <template v-slot:item.status="{ item }">
         <span class="badge_status text-uppercase">
           2134
         </span>
-      </template>
+    </template>
 
-      <template v-slot:item.members="{ item }">
-        <div class="d-flex align-center">
-          <div class="flex-grow-1 no_content">
-            <template v-if="item.hasMember">
-              <template v-for="m in item.members">
-                <member-link :key="'mb-meeting-'+m.user"
-                             v-if="m.user"
-                             :ID="m.user">
-                  <avatar-member :user="m.user" :size="25"></avatar-member>
-                </member-link>
-              </template>
-            </template>
-          </div>
-
-          <div class="fa-user-plus1" @click="$bus.$emit('menu-member', $event, item.members, item)">
-            <!--<v-icon>fa fa-user-plus</v-icon>-->
-            <i class="fa fa-user-plus ml-2" aria-hidden="true"></i>
-          </div>
-
-        </div>
-      </template>
-      <template v-slot:item.time="{ item }">
-        <div class="d-flex align-center cell-date" style="color: #8898aa;">
-          <div class="flex-grow-1">
-            <span>2019-19-11 11:02 am</span>
-          </div>
-          <i class="fa fa-calendar"></i>
-        </div>
-      </template>
-      <template v-slot:item.location="{ item }">
-        <div class="d-flex align-center">
-          <div class="flex-grow-1">
-            <span>Ho chi minh city</span>
-          </div>
-          <i class="fa fa-map-marker fa-cell-icon" aria-hidden="true"></i>
-        </div>
-      </template>
-      <template v-slot:item.creator="{ item }">
-        <div class="d-flex align-center">
-          <div class="flex-grow-1">
-            <template v-if="item.hasCreator">
-              <member-link :ID="item.creator">
-                <avatar-member :user="item.creator" :size="25"></avatar-member>
+    <template v-slot:item.members="{ item }">
+      <div class="d-flex align-center">
+        <div class="flex-grow-1 no_content">
+          <template v-if="item.hasMember">
+            <template v-for="m in item.members">
+              <member-link :key="'mb-meeting-'+m.user"
+                           v-if="m.user"
+                           :ID="m.user">
+                <avatar-member :user="m.user" :size="25"></avatar-member>
               </member-link>
             </template>
+          </template>
+        </div>
+
+        <div class="fa-user-plus1" @click="$bus.$emit('menu-member', $event, item.members, item)">
+          <!--<v-icon>fa fa-user-plus</v-icon>-->
+          <i class="fa fa-user-plus ml-2" aria-hidden="true"></i>
+        </div>
+
+      </div>
+    </template>
+    <template v-slot:item.time="{ item }">
+      <div class="d-flex align-center cell-date" style="color: #8898aa;">
+        <div class="flex-grow-1">
+          <span>2019-19-11 11:02 am</span>
+        </div>
+        <i class="fa fa-calendar"></i>
+      </div>
+    </template>
+    <template v-slot:item.location="{ item }">
+      <div class="d-flex align-center">
+        <div class="flex-grow-1">
+          <span>Ho chi minh city</span>
+        </div>
+        <i class="fa fa-map-marker fa-cell-icon" aria-hidden="true"></i>
+      </div>
+    </template>
+    <template v-slot:item.creator="{ item }">
+      <div class="d-flex align-center">
+        <div class="flex-grow-1">
+          <template v-if="item.hasCreator">
+            <member-link :ID="item.creator">
+              <avatar-member :user="item.creator" :size="25"></avatar-member>
+            </member-link>
+          </template>
+        </div>
+      </div>
+    </template>
+    <template v-slot:item.progress="{ item }">
+      <div class="d-flex align-center">
+        <div class="flex-grow-1">
+          <v-progress-linear color="#5e72e4"
+                             height="15"
+                             :value="item.progress"
+                             reactive>
+            <template v-slot="{ value }">
+              <strong style="font-size: 75%">{{ Math.ceil(value) }}%</strong>
+            </template>
+          </v-progress-linear>
+        </div>
+      </div>
+    </template>
+    <template v-slot:item.active="{ item }">
+      <div class="d-flex align-center">
+        <div class="flex-grow-1">
+          <div class="cusor--pointer d-inline-block" @click="$bus.$emit('menu-matter-switch', $event, item.activate, item, 'activate', 'Active matter')">
+            <span v-if="item.activate" class="badge badge-success"> active </span>
+            <span v-else class="badge badge-warning"> inactive</span>
           </div>
         </div>
-      </template>
-      <template v-slot:item.progress="{ item }">
-        <div class="d-flex align-center">
-          <div class="flex-grow-1">
-            <v-progress-linear color="#5e72e4"
-                               height="15"
-                               :value="item.progress"
-                               reactive>
-              <template v-slot="{ value }">
-                <strong style="font-size: 75%">{{ Math.ceil(value) }}%</strong>
-              </template>
-            </v-progress-linear>
+      </div>
+    </template>
+    <template v-slot:item.clients="{ item }">
+      <div class="d-flex justify-content-between" style="width: 180px;">
+        <div class="flex-grow-1" style="overflow:hidden;">
+          <div style="white-space: normal" v-if="item.hasClient">
+            <v-chip :style="{background: $hexToRgbA(item.riskColor), color: item.riskColor}"
+                    class="ma-1" label v-for="i in item.clients" :key="'lv-cl-'+i.clientID">
+              <v-icon x-small left v-if="i.isIndividual()">fas fa-user-tie</v-icon>
+              <v-icon x-small left v-else>fas fa-layer-group</v-icon>
+              {{i.name}}
+            </v-chip>
           </div>
         </div>
-      </template>
-      <template v-slot:item.active="{ item }">
-        <div class="d-flex align-center">
-          <div class="flex-grow-1">
-            <div class="cusor--pointer d-inline-block" @click="$bus.$emit('menu-matter-switch', $event, item.activate, item, 'activate', 'Active matter')">
-              <span v-if="item.activate" class="badge badge-success"> active </span>
-              <span v-else class="badge badge-warning"> inactive</span>
-            </div>
+        <div>
+          <div class="fa-user-plus1 ml-2" @click="$bus.$emit('menu-clients', {e: $event, val: item.clients, item, k: 'clients'})">
+            <i class="fas fa-user-plus"></i>
           </div>
         </div>
-      </template>
-      <template v-slot:item.clients="{ item }">
-        <div class="d-flex justify-content-between" style="width: 180px;">
-          <div class="flex-grow-1" style="overflow:hidden;">
-            <div style="white-space: normal" v-if="item.hasClient">
-              <v-chip :style="{background: $hexToRgbA(item.riskColor), color: item.riskColor}"
-                      class="ma-1" label v-for="i in item.clients" :key="'lv-cl-'+i.clientID">
-                <v-icon x-small left v-if="i.isIndividual()">fas fa-user-tie</v-icon>
-                <v-icon x-small left v-else>fas fa-layer-group</v-icon>
-                {{i.name}}
-              </v-chip>
-            </div>
-          </div>
-          <div>
-            <div class="fa-user-plus1 ml-2" @click="$bus.$emit('menu-clients', {e: $event, val: item.clients, item, k: 'clients'})">
-              <i class="fas fa-user-plus"></i>
-            </div>
-          </div>
-        </div>
-      </template>
-      <template v-slot:item.types="{ item }">
-        <div class="d-flex align-center" style="width: 200px;">
-          <div class="flex-grow-1" style="max-width: 100%">
-            <div style="white-space: normal" class="py-2">
+      </div>
+    </template>
+    <template v-slot:item.types="{ item }">
+      <div class="d-flex align-center" style="width: 200px;">
+        <div class="flex-grow-1" style="max-width: 100%">
+          <div style="white-space: normal" class="py-2">
               <span class="badge badge-pill badge-info text-capitalize d-inline-block badge-tag"
                     style="padding: 5px 10px; margin: 2px 2px"
                     :style="{background: '#'+tag.color, color:'#fff'}"
@@ -204,79 +198,78 @@
                     :key="'tag-column-'+tag.pk">
                           {{tag.name}}
                         </span>
-            </div>
-          </div>
-          <div>
-            <div class="fa-user-plus1 ml-2" @click="$bus.$emit('menu-types', $event, item.types, item)">
-              <i class="fa fa-tag" aria-hidden="true"></i>
-            </div>
           </div>
         </div>
-      </template>
-      <template v-slot:item.start_date="{ item }">
-        <div class="d-flex align-center">
-          <div class="flex-grow-1">
-            <p v-if="item.start_date" class="caption ma-0">
-              {{$formatDateTime(item.start_date, 'MMM Do YY')}}
-            </p>
-          </div>
-          <div>
-            <div class="fa-user-plus1 ml-2"
-                 @click="$bus.$emit('menu-matter-date', $event, item.start_date, item, 'start_date')">
-              <v-icon x-small color="#8898aa">fas fa-calendar-alt</v-icon>
-            </div>
+        <div>
+          <div class="fa-user-plus1 ml-2" @click="$bus.$emit('menu-types', $event, item.types, item)">
+            <i class="fa fa-tag" aria-hidden="true"></i>
           </div>
         </div>
-      </template>
-      <template v-slot:item.date_filled="{ item }">
-        <div class="d-flex align-center">
-          <div class="flex-grow-1">
-            <p v-if="item.date_filled" class="caption ma-0">
-              {{$formatDateTime(item.start_date, 'MMM Do YY')}}
-            </p>
-          </div>
-          <div>
-            <div class="fa-user-plus1 ml-2"
-                 @click="$bus.$emit('menu-matter-date', $event, item.date_filled, item, 'date_filled')">
-              <v-icon x-small color="#8898aa">fas fa-calendar-alt</v-icon>
-            </div>
+      </div>
+    </template>
+    <template v-slot:item.start_date="{ item }">
+      <div class="d-flex align-center">
+        <div class="flex-grow-1">
+          <p v-if="item.start_date" class="caption ma-0">
+            {{$formatDateTime(item.start_date, 'MMM Do YY')}}
+          </p>
+        </div>
+        <div>
+          <div class="fa-user-plus1 ml-2"
+               @click="$bus.$emit('menu-matter-date', $event, item.start_date, item, 'start_date')">
+            <v-icon x-small color="#8898aa">fas fa-calendar-alt</v-icon>
           </div>
         </div>
-      </template>
-      <template v-slot:item.est_time="{ item }">
-        <div class="d-flex align-center">
-          <div class="flex-grow-1">
-            <p v-if="item.est_time" class="caption ma-0">
-              {{$formatTimeToDay(item.est_time)}}
-            </p>
-          </div>
-          <div>
-            <div class="fa-user-plus1 ml-2"
-                 @click="$bus.$emit('menu-matter-time', $event, item.date_filled, item, 'est_time')">
-              <v-icon x-small color="#8898aa">far fa-clock</v-icon>
-              <!--              <i class="far fa-clock"></i>-->
-            </div>
+      </div>
+    </template>
+    <template v-slot:item.date_filled="{ item }">
+      <div class="d-flex align-center">
+        <div class="flex-grow-1">
+          <p v-if="item.date_filled" class="caption ma-0">
+            {{$formatDateTime(item.start_date, 'MMM Do YY')}}
+          </p>
+        </div>
+        <div>
+          <div class="fa-user-plus1 ml-2"
+               @click="$bus.$emit('menu-matter-date', $event, item.date_filled, item, 'date_filled')">
+            <v-icon x-small color="#8898aa">fas fa-calendar-alt</v-icon>
           </div>
         </div>
-      </template>
-      <template v-slot:item.jury_demand="{ item }">
-        <div class="d-flex align-center">
-          <div class="flex-grow-1">
-            <div @click="$bus.$emit('menu-matter-switch', $event, item.jury_demand, item, 'jury_demand')">
+      </div>
+    </template>
+    <template v-slot:item.est_time="{ item }">
+      <div class="d-flex align-center">
+        <div class="flex-grow-1">
+          <p v-if="item.est_time" class="caption ma-0">
+            {{$formatTimeToDay(item.est_time)}}
+          </p>
+        </div>
+        <div>
+          <div class="fa-user-plus1 ml-2"
+               @click="$bus.$emit('menu-matter-time', $event, item.date_filled, item, 'est_time')">
+            <v-icon x-small color="#8898aa">far fa-clock</v-icon>
+            <!--              <i class="far fa-clock"></i>-->
+          </div>
+        </div>
+      </div>
+    </template>
+    <template v-slot:item.jury_demand="{ item }">
+      <div class="d-flex align-center">
+        <div class="flex-grow-1">
+          <div @click="$bus.$emit('menu-matter-switch', $event, item.jury_demand, item, 'jury_demand')">
               <span v-if="item.jury_demand"
                     class="badge badge-success cusor--pointer">
                           Yes
                         </span>
-              <span v-else
-                    class="badge badge-danger cusor--pointer">
+            <span v-else
+                  class="badge badge-danger cusor--pointer">
                           No
                         </span>
-            </div>
           </div>
         </div>
-      </template>
-    </v-data-table>
-  </div>
+      </div>
+    </template>
+  </v-data-table>
 </template>
 
 <script>

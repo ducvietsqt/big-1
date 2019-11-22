@@ -2,7 +2,7 @@
   <v-menu v-model="showMenu"
           :position-x="x"
           :position-y="y"
-          absolute
+          absolute allow-overflow
           :close-on-content-click="false"
           offset-y>
     <v-card flat>

@@ -1,15 +1,10 @@
 <template>
-    <div>
-        Index auth
-    </div>
+  <nuxt-child />
 </template>
 
 <script>
-  export default {
-    created() {
-
-    }
-  }
+export default {
+}
 </script>
 
 <style scoped>

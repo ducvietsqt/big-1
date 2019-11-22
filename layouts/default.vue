@@ -11,7 +11,7 @@
             <div class="d-flex align-center">
               <nuxt-link class="link_bt" to="/auth/signin">Sign in</nuxt-link>
               <!--<v-btn class="text-capitalize" text color="primary" dark to="/auth/signin">Sign in</v-btn>-->
-              <nuxt-link class="text-capitalize ml-2 link_bt" rounded color="primary" dark to="/auth/create-work-space">Sign Up
+              <nuxt-link class="text-capitalize ml-2 link_bt" rounded color="primary" dark to="/auth/create-workspace">Sign Up
               </nuxt-link>
             </div>
           </v-toolbar-items>

@@ -28,6 +28,8 @@ export class Matter {
     this.next_courts = c.next_courts || []
     this.creator = c.creator
 
+    this.matter_stage = this.matterStage(c.matter_stage || null)
+
     // todo action tracking
     this.canUpdate = false
     this.hasCreator = this.hasProps(this.creator)
@@ -108,7 +110,18 @@ export class Matter {
         return '#000000'
     }
   }
+  matterStage(st) {
+    return new MatterStage(st)
+  }
+}
 
-
-
+class MatterStage {
+  constructor(st) {
+    if(!st) st = {title: 'New', color: '#5e72e4', id: 2, icon_num: 1};
+    // {title: 'N/A', color: '#37474f', id: 1, icon_num: 1},
+    this.MatterStageID = st.id || null,
+    this.name = st.title || null,
+    this.color = st.color || null,
+    this.icon_num = st.icon_num || null
+  }
 }

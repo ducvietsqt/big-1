@@ -164,20 +164,6 @@
           }
         }
       },
-      memberSelected: {
-        get() {
-          return this.selected
-        },
-        set(value) { // eslint-disable-line
-          try {
-            console.log('CC', value)
-            this.$emit('change', value)
-
-            return false
-          } catch (e) { // eslint-disable-line
-          }
-        }
-      },
       ...mapGetters({
         'allTags': 'clients/list'
       })

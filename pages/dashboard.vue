@@ -19,6 +19,7 @@
         <menu-time></menu-time>
         <menu-switch></menu-switch>
         <menu-clients></menu-clients>
+        <menu-stages></menu-stages>
         <!-- If using vue-router -->
         <v-menu offset-y :close-on-content-click="false" top right>
           <template v-slot:activator="{ on }">

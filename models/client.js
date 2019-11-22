@@ -20,7 +20,9 @@ export class Client {
 
     this.name = this.getName() || 'N/A'
   }
-
+  isIndividual() {
+    return this.client_type === 'i' // 'i': individual, c: 'Corporation'
+  }
   getName() {
     return this.first_name + ' ' + this.last_name
   }

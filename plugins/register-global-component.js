@@ -20,6 +20,9 @@ import MenuSwitch from '../components/matters/MenuSwitch'
 import ClientList from '../components/matters/ClientList'
 import MenuClients from '../components/matters/MenuClients'
 
+import StagesList from '../components/matters/StagesList'
+import MenuStages from '../components/matters/MenuStages'
+
 
 
 // Utils
@@ -46,5 +49,9 @@ Vue.component('menu-switch', MenuSwitch)
 
 Vue.component('menu-clients', MenuClients)
 Vue.component('client-list', ClientList)
+
+Vue.component('menu-stages', MenuStages)
+Vue.component('stages-list', StagesList)
+
 
 

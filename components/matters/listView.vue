@@ -80,6 +80,21 @@
           </div>
         </div>
       </template>
+      <template v-slot:item.matter_stage="{ item }">
+        <div class="d-flex align-center" style="width: 120x">
+          <div class="flex-grow-1">
+            <span class="badge d-block cusor--pointer"
+                  @click="$bus.$emit('menu-stages', {e: $event, val: item.matter_stage, item, k: 'matter_stage', title: 'Matter stage'})"
+                  :style="{background: $hexToRgbA(item.matter_stage.color), color: item.matter_stage.color}">
+                          {{item.matter_stage.name}}
+                        </span>
+          </div>
+         <!-- <div class="fa-user-plus1 ml-2" @click="$bus.$emit('menu-stages', {e: $event, val: item.matter_stage, item, k: 'matter_stage', title: 'Matter stage'})">
+            <v-icon small :color="item.matter_stage.color">fas fa-tasks</v-icon>
+          </div>-->
+        </div>
+      </template>
+
 
       <template v-slot:item.status="{ item }">
         <span class="badge_status text-uppercase">
@@ -160,11 +175,13 @@
         </div>
       </template>
       <template v-slot:item.clients="{ item }">
-        <div class="d-flex align-center" style="width: 150px;">
-          <div class="flex-grow-1">
+        <div class="d-flex justify-content-between" style="width: 180px;">
+          <div class="flex-grow-1" style="overflow:hidden;">
             <div style="white-space: normal" v-if="item.hasClient">
               <v-chip :style="{background: $hexToRgbA(item.riskColor), color: item.riskColor}"
                       class="ma-1" label v-for="i in item.clients" :key="'lv-cl-'+i.clientID">
+                <v-icon x-small left v-if="i.isIndividual()">fas fa-user-tie</v-icon>
+                <v-icon x-small left v-else>fas fa-layer-group</v-icon>
                 {{i.name}}
               </v-chip>
             </div>

@@ -4,7 +4,7 @@
       <v-form v-model="valid" class="form_auth" lazy-validation @submit.prevent="submit">
         <v-card-title class="layout align-center px-0">
           <div class="headline font-weight-bold text-center">
-            Create New Workspace
+            What your work email?
           </div>
         </v-card-title>
         <v-text-field
@@ -63,7 +63,8 @@ const STEPS = {
 
 export default {
   name: "CreateWorkspace",
-  components: { CreateProjectVerifyCode, CreateWorkSpace },
+  layout: "auth",
+  components: { CreateProjectVerifyCode, CreateWorkSpace, },
   metaInfo: {
     title: "Create Workspace"
   },

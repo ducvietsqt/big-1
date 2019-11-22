@@ -53,6 +53,7 @@ export default {
   components: {
     login
   },
+  layout: "auth",
   async asyncData (context) {
     const { req, res, $axios } = context
     // using req and res

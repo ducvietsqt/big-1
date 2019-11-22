@@ -1,5 +1,8 @@
 import colors from "vuetify/es5/util/colors"
 // import '@fortawesome/fontawesome-free/css/all.css'
+import { config } from 'dotenv'
+
+config()
 
 const VUE_APP_DOMAIN = {
   dev: "localhost",
@@ -7,8 +10,7 @@ const VUE_APP_DOMAIN = {
 }
 
 const APP_DOMAIN = process.env.NODE_ENV === 'development' ? VUE_APP_DOMAIN.dev : VUE_APP_DOMAIN.prod
-// const BASE_URL = "https://satlegal.ebitc.com"
-const BASE_URL = "http://localhost:8000"
+const BASE_URL = process.env.BASE_URL
 
 export default {
   mode: "universal",
